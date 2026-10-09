@@ -1,0 +1,347 @@
+---
+import Base from '../../layouts/Base.astro';
+import FaqJsonLd from '../../components/FaqJsonLd.astro';
+import { BEARINGS, BEARING_BY_MODEL } from '../../data/bearing-models';
+import { CHINESE_FACTORIES, CHINESE_MODEL_BY_MODEL } from '../../data/chinese-equivalents';
+
+export async function getStaticPaths() {
+  return BEARINGS.map(b => ({
+    params: { slug: `${b.model.toLowerCase()}-bearing` },
+    props: { bearing: b },
+  }));
+}
+
+const { bearing: b } = Astro.props;
+const m = b.model;
+const d = b.dimensions;
+const lr = b.loadRatings;
+const priceData = CHINESE_MODEL_BY_MODEL[m];
+
+// Related bearings: same series, excluding self
+const related = BEARINGS.filter(x => x.series === b.series && x.model !== m).slice(0, 4);
+
+// SEO
+const title = b.seo.title;
+const description = b.seo.description;
+
+// Product schema
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `${m} Deep Groove Ball Bearing`,
+  description: description,
+  brand: { '@type': 'Brand', name: 'ISO Standard' },
+  mpn: m,
+  material: 'GCr15 bearing steel',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'USD',
+    lowPrice: priceData?.priceRangeUSD.min,
+    highPrice: priceData?.priceRangeUSD.max,
+    offerCount: 4,
+    availability: 'https://schema.org/InStock',
+    url: `https://bearingcalculators.com/${m.toLowerCase()}-bearing/`,
+  },
+  additionalProperty: [
+    { '@type': 'PropertyValue', name: 'Bore diameter', value: `${d.bore} mm` },
+    { '@type': 'PropertyValue', name: 'Outer diameter', value: `${d.od} mm` },
+    { '@type': 'PropertyValue', name: 'Width', value: `${d.width} mm` },
+    { '@type': 'PropertyValue', name: 'Dynamic load rating C', value: `${lr.dynamicC} kN` },
+    { '@type': 'PropertyValue', name: 'Static load rating C0', value: `${lr.staticC0} kN` },
+    { '@type': 'PropertyValue', name: 'Standard', value: 'ISO 15:2017' },
+  ],
+};
+
+const faqItems = [
+  {
+    question: `What are the dimensions of the ${m} bearing?`,
+    answer: `The ${m} bearing measures ${d.bore}mm bore × ${d.od}mm outer diameter × ${d.width}mm width, with a fillet radius of ${d.fillet}mm. This conforms to ISO 15:2017.`,
+  },
+  {
+    question: `What is the load rating of the ${m}?`,
+    answer: `The ${m} has a dynamic load rating (C) of ${lr.dynamicC} kN and a static load rating (C₀) of ${lr.staticC0} kN. These values are used in ISO 281 L10 life calculations.`,
+  },
+  {
+    question: `What speed can the ${m} run at?`,
+    answer: `With grease lubrication, the ${m} has a reference speed of ${b.speedLimits.grease.toLocaleString()} rpm. With oil lubrication, the limit is ${b.speedLimits.oil.toLocaleString()} rpm.`,
+  },
+  {
+    question: `Are SKF, NSK, FAG, and Timken ${m} interchangeable?`,
+    answer: `Yes. All major bearing brands (SKF, FAG, NSK, NTN, KOYO, NACHI, Timken) produce the ${m} to ISO 15:2017 dimensional standards. They are fully interchangeable on bore, OD, and width dimensions.`,
+  },
+  {
+    question: `What Chinese brands make a ${m} equivalent?`,
+    answer: `ZWZ, LYC (Luoyang), C&U (Changzhou), and HRB (Harbin) all manufacture ${m} equivalents to ISO 15:2017. Old Chinese GB numbers: ${b.chinese.oldGB.join(', ')}. All are dimensionally interchangeable with SKF/NSK.`,
+  },
+  {
+    question: `What is the difference between ${m} open, ${m} 2RS, and ${m} ZZ?`,
+    answer: `Open: no seals, suitable for clean environments with re-lubrication access. 2RS (rubber sealed both sides): maintenance-free, best for dusty or wet environments. ZZ (metal shielded): lower torque than 2RS, good dust protection but not waterproof. For most applications, 2RS is recommended.`,
+  },
+  {
+    question: `What shaft tolerance fits the ${m} bearing?`,
+    answer: `For a rotating inner ring (most common), use shaft tolerance k6 for normal loads or m6 for heavy loads. For a non-rotating shaft, h6 or js6 is appropriate. Housing bore should be H7 for a stationary outer ring. Use our Bearing Fit Calculator for exact tolerance values.`,
+  },
+  {
+    question: `How do I calculate ${m} bearing life?`,
+    answer: `L10 = (C/P)³ where C = ${lr.dynamicC} kN (dynamic rating) and P is your applied equivalent load (kN). L10h = L10 × 10⁶ / (60 × n), where n is speed in RPM. Use our Bearing Life Calculator to compute this automatically.`,
+  },
+];
+---
+<Base
+  title={title}
+  description={description}
+  jsonLd={productJsonLd}
+  breadcrumbItems={[
+    { name: 'Bearings', url: '/bearing-size-chart/' },
+    { name: `${m} Bearing`, url: `/${m.toLowerCase()}-bearing/` },
+  ]}
+>
+  <FaqJsonLd items={faqItems} />
+
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <!-- Hero -->
+    <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-widest text-theme-muted">ISO 15:2017 · Deep Groove Ball Bearing</span>
+          {b.availability.status === 'in-stock' && <span class="badge-in-stock text-xs px-2 py-0.5 rounded-full">In Stock</span>}
+        </div>
+        <h1 class="text-4xl font-bold text-theme-primary mb-1">{m} Bearing</h1>
+        <p class="text-xl text-theme-secondary font-mono">{d.bore}×{d.od}×{d.width} mm</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="/bearing-life-calculator/" class="border border-theme text-theme-secondary hover:text-theme-primary hover:border-orange-400 text-sm px-4 py-2 rounded-lg transition-colors">
+          Life Calculator
+        </a>
+        <a href="/request-a-quote/" class="accent-bg hover:opacity-90 text-sm font-semibold px-4 py-2 rounded-lg transition-colors" style="color:#07090c;">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Left column: specs + variants + interchange -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Dimensions & Load Data -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Specifications</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+            {[
+              ['Bore (d)', `${d.bore} mm`],
+              ['OD (D)', `${d.od} mm`],
+              ['Width (B)', `${d.width} mm`],
+              ['Fillet radius', `${d.fillet} mm`],
+              ['Dynamic C', `${lr.dynamicC} kN`],
+              ['Static C₀', `${lr.staticC0} kN`],
+              ['Fatigue limit Pᵤ', `${lr.fatigueLimitPu} kN`],
+              ['Speed (grease)', `${b.speedLimits.grease.toLocaleString()} rpm`],
+              ['Speed (oil)', `${b.speedLimits.oil.toLocaleString()} rpm`],
+              ['Weight (open)', `${b.weight} kg`],
+              ['Standard', 'ISO 15:2017'],
+              ['DIN', 'DIN 625'],
+            ].map(([label, value]) => (
+              <div class="bg-theme-tertiary rounded-lg p-3">
+                <p class="text-xs text-theme-muted">{label}</p>
+                <p class="font-semibold text-theme-primary mt-0.5 font-mono text-sm">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          <!-- Variants table -->
+          <h3 class="text-sm font-semibold text-theme-primary mb-3">Variants (SKF suffix convention)</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-theme">
+                  <th class="text-left py-2 pr-4 text-theme-muted font-medium">Variant</th>
+                  <th class="text-left py-2 pr-4 text-theme-muted font-medium">SKF model</th>
+                  <th class="text-right py-2 pr-4 text-theme-muted font-medium">Weight (kg)</th>
+                  <th class="text-left py-2 text-theme-muted font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { key: 'open', label: 'Open', desc: 'No seals — for clean environments, re-greaseable' },
+                  { key: '2RS',  label: 'Rubber sealed (both)', desc: 'Maintenance-free, best dust/moisture protection' },
+                  { key: 'ZZ',   label: 'Metal shielded (both)', desc: 'Lower torque than 2RS, good dust protection' },
+                ].map(({ key, label, desc }) => {
+                  const v = b.variants[key as keyof typeof b.variants];
+                  const skfCode = v.suffix ? `${m} ${v.suffix}` : m;
+                  return (
+                    <tr class="border-b border-theme">
+                      <td class="py-2 pr-4 font-semibold text-theme-primary">{label}</td>
+                      <td class="py-2 pr-4 font-mono text-theme-secondary">{skfCode}</td>
+                      <td class="py-2 pr-4 text-right font-mono text-theme-secondary">{v.weight}</td>
+                      <td class="py-2 text-theme-secondary text-xs">{desc}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Brand Interchange -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Brand Interchange</h2>
+          <p class="text-sm text-theme-secondary mb-4">All brands below manufacture the {m} to ISO 15:2017 — fully interchangeable on bore, OD, and width.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-theme">
+                  <th class="text-left py-2 pr-6 text-theme-muted font-medium">Brand</th>
+                  <th class="text-left py-2 pr-6 text-theme-muted font-medium">Open</th>
+                  <th class="text-left py-2 pr-6 text-theme-muted font-medium">2RS sealed</th>
+                  <th class="text-left py-2 text-theme-muted font-medium">ZZ shielded</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { brand: 'SKF',    open: m,        twoRS: `${m} 2RS1`, zz: `${m} Z`     },
+                  { brand: 'FAG',    open: m,        twoRS: `${m} 2RS`,  zz: `${m} Z`     },
+                  { brand: 'NSK',    open: m,        twoRS: `${m} 2RS`,  zz: `${m} ZZ`    },
+                  { brand: 'NTN',    open: m,        twoRS: `${m} 2RS`,  zz: `${m} ZZ`    },
+                  { brand: 'KOYO',   open: m,        twoRS: `${m} 2RS`,  zz: `${m} ZZ`    },
+                  { brand: 'NACHI',  open: m,        twoRS: `${m} 2NSE9`, zz: `${m} ZZE`  },
+                  { brand: 'Timken', open: m,        twoRS: `${m} 2RS`,  zz: `${m} ZZ`    },
+                ].map(row => (
+                  <tr class="border-b border-theme">
+                    <td class="py-2 pr-6 font-semibold text-theme-primary">{row.brand}</td>
+                    <td class="py-2 pr-6 font-mono text-theme-secondary">{row.open}</td>
+                    <td class="py-2 pr-6 font-mono text-theme-secondary">{row.twoRS}</td>
+                    <td class="py-2 font-mono text-theme-secondary">{row.zz}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <a href="/bearing-interchange/" class="inline-block mt-3 text-sm accent-text hover:underline">Open Interchange Tool →</a>
+        </div>
+
+        <!-- Chinese Alternatives -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-1">Chinese Manufacturer Alternatives</h2>
+          <p class="text-sm text-theme-secondary mb-4">
+            Dimensionally interchangeable with SKF/NSK per ISO 15:2017.
+            {priceData && <span> Indicative FOB price: <strong class="text-theme-primary">${priceData.priceRangeUSD.min}–${priceData.priceRangeUSD.max} USD</strong> (MOQ 100 pcs, P0 open).</span>}
+          </p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-theme">
+                  <th class="text-left py-2 pr-4 text-theme-muted font-medium">Manufacturer</th>
+                  <th class="text-left py-2 pr-4 text-theme-muted font-medium">Model</th>
+                  <th class="text-left py-2 pr-4 text-theme-muted font-medium">Grade</th>
+                  <th class="text-left py-2 text-theme-muted font-medium">Tier</th>
+                </tr>
+              </thead>
+              <tbody>
+                {b.chinese.equivalents.map(c => (
+                  <tr class="border-b border-theme">
+                    <td class="py-2 pr-4 font-semibold text-theme-primary">{c.factory}</td>
+                    <td class="py-2 pr-4 font-mono text-theme-secondary">{c.model}</td>
+                    <td class="py-2 pr-4 text-theme-secondary">{c.precision}</td>
+                    <td class="py-2">
+                      <span class={c.priceTier === 'budget' ? 'text-green-400 text-xs' : 'accent-text text-xs'}>
+                        {c.priceTier === 'budget' ? 'Budget' : 'Mid-range'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-theme-muted mt-3">Old Chinese GB numbers: {b.chinese.oldGB.join(', ')}</p>
+          <a href="/request-a-quote/" class="inline-block mt-3 accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">
+            Request Quote from Chinese Factories
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right column: calculators + related -->
+      <div class="space-y-4">
+        <!-- Quick life calc -->
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">Quick Life Estimate</h3>
+          <p class="text-xs text-theme-muted mb-3">C = {lr.dynamicC} kN. Enter load and speed:</p>
+          <div class="space-y-2">
+            <div>
+              <label class="text-xs text-theme-secondary">Load P (kN)</label>
+              <input id="quick-P" type="number" placeholder={String(Math.round(lr.dynamicC * 0.35 * 10)/10)} class="field w-full rounded-lg px-2 py-1.5 text-sm mt-0.5" />
+            </div>
+            <div>
+              <label class="text-xs text-theme-secondary">Speed (RPM)</label>
+              <input id="quick-n" type="number" placeholder="1450" class="field w-full rounded-lg px-2 py-1.5 text-sm mt-0.5" />
+            </div>
+            <button id="quick-calc" class="w-full accent-bg text-xs font-semibold py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Calculate L10h</button>
+          </div>
+          <div id="quick-result" class="hidden mt-3 p-2 rounded-lg bg-theme-tertiary">
+            <p class="text-xs text-theme-muted">L10h</p>
+            <p id="quick-hours" class="text-xl font-bold accent-text"></p>
+          </div>
+          <a href={`/bearing-life-calculator/?model=${m}`} class="block mt-2 text-xs accent-text hover:underline">Full calculator →</a>
+        </div>
+
+        <!-- Fit guide -->
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">Recommended Fit</h3>
+          <div class="space-y-2 text-xs text-theme-secondary">
+            <div><span class="text-theme-primary font-medium">Shaft (inner ring):</span><br/>Normal load: <span class="font-mono">k6</span> · Heavy: <span class="font-mono">m6</span></div>
+            <div><span class="text-theme-primary font-medium">Housing (outer ring):</span><br/>Stationary: <span class="font-mono">H7</span> · Rotating: <span class="font-mono">M7</span></div>
+          </div>
+          <a href="/bearing-calculator/" class="block mt-3 text-xs accent-text hover:underline">Open Fit Calculator →</a>
+        </div>
+
+        <!-- Related -->
+        {related.length > 0 && (
+          <div class="card">
+            <h3 class="font-semibold text-theme-primary mb-3">Related Bearings</h3>
+            <div class="space-y-2">
+              {related.map(r => (
+                <a href={`/${r.model.toLowerCase()}-bearing/`} class="flex items-center justify-between py-1.5 border-b border-theme hover:accent-text transition-colors group">
+                  <span class="font-mono font-semibold group-hover:accent-text text-theme-primary">{r.model}</span>
+                  <span class="text-xs text-theme-muted">{r.dimensions.bore}×{r.dimensions.od}×{r.dimensions.width}</span>
+                </a>
+              ))}
+            </div>
+            <a href="/bearing-size-chart/" class="block mt-3 text-xs accent-text hover:underline">Full size chart →</a>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-theme-primary mb-6">Frequently Asked Questions — {m} Bearing</h2>
+      <div class="space-y-4 max-w-3xl">
+        {faqItems.map(({ question, answer }) => (
+          <div class="card">
+            <h3 class="font-semibold text-theme-primary mb-2">{question}</h3>
+            <p class="text-sm text-theme-secondary">{answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="disclaimer rounded-lg p-4 mt-8 text-sm max-w-3xl">
+      <strong>Disclaimer:</strong> Specifications based on ISO 15:2017 and published manufacturer catalogs. Dynamic load ratings and speed limits are reference values. Always verify critical specifications with the bearing manufacturer before design finalization or procurement.
+    </div>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ C: b.loadRatings.dynamicC }}>
+(function () {
+  document.getElementById('quick-calc')?.addEventListener('click', function () {
+    var P = parseFloat(document.getElementById('quick-P').value);
+    var n = parseFloat(document.getElementById('quick-n').value);
+    if (!P || !n || P <= 0 || n <= 0) return;
+    var L10  = Math.pow(C / P, 3);
+    var L10h = (L10 * 1e6) / (60 * n);
+    var fmt  = L10h >= 10000 ? (L10h / 1000).toFixed(1) + 'k h' : L10h.toFixed(0) + ' h';
+    document.getElementById('quick-hours').textContent = fmt;
+    document.getElementById('quick-result').classList.remove('hidden');
+  });
+})();
+</script>

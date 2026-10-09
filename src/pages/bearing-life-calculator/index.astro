@@ -1,0 +1,272 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BEARINGS } from '../../data/bearing-models';
+
+const title = 'Bearing Life Calculator — ISO 281 L10 | BearingCalculators';
+const description = 'Free ISO 281 bearing life calculator. Enter dynamic load rating C, equivalent load P, and RPM to get L10 life in hours. Supports all DGBB series.';
+
+// Serialize model list for client-side use
+const modelList = BEARINGS.map(b => ({
+  model: b.model,
+  C: b.loadRatings.dynamicC,
+  C0: b.loadRatings.staticC0,
+  n: b.speedLimits.grease,
+  bore: b.dimensions.bore,
+  od: b.dimensions.od,
+}));
+
+const faqItems = [
+  { question: 'What is L10 bearing life?', answer: 'L10 is the basic rating life per ISO 281: the number of revolutions (or hours) that 90% of a group of identical bearings will complete without fatigue failure under a given load. 10% may fail before reaching L10.' },
+  { question: 'What is the ISO 281 formula?', answer: 'L10 = (C/P)^p, where C is dynamic load rating (kN), P is equivalent dynamic load (kN), and p = 3 for ball bearings or 10/3 for roller bearings. L10h = L10 × 10^6 / (60 × n), where n is speed in RPM.' },
+  { question: 'How do I find the dynamic load rating C?', answer: 'C is listed in the bearing\'s datasheet. For common 6200 series, typical values: 6204=12.8kN, 6205=14.0kN, 6206=19.5kN. You can also select a model above to pre-fill C automatically.' },
+  { question: 'What is equivalent dynamic load P?', answer: 'P is the combined radial and axial load the bearing "sees," accounting for load direction. For pure radial load with no axial component, P = Fr (radial force). For combined loading: P = X·Fr + Y·Fa, where X and Y are factors from the bearing catalogue.' },
+  { question: 'What is a realistic bearing life target?', answer: 'Electric motors: 20,000–40,000 h. Industrial gearboxes: 30,000 h. Automotive: 3,000–5,000 h. Pumps: 17,500 h (ISO 10816 general guideline). If your calculated L10h is less than twice the target, consider a larger bearing.' },
+];
+---
+<Base title={title} description={description} breadcrumbItems={[{ name: 'Calculators', url: '/bearing-life-calculator/' }, { name: 'Bearing Life', url: '/bearing-life-calculator/' }]}>
+
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Bearing Life Calculator</h1>
+      <p class="text-theme-secondary">ISO 281 L10 rating life — calculate operating hours for any deep groove ball bearing.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+      <!-- Form -->
+      <div class="lg:col-span-2">
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Inputs</h2>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="model-select">
+                Bearing model (optional — pre-fills C)
+              </label>
+              <select id="model-select" class="field w-full rounded-lg px-3 py-2 text-sm">
+                <option value="">— Select model or enter C manually —</option>
+                {BEARINGS.map(b => (
+                  <option value={b.model} data-c={b.loadRatings.dynamicC} data-n={b.speedLimits.grease}>
+                    {b.model} (C={b.loadRatings.dynamicC}kN, {b.dimensions.bore}×{b.dimensions.od}×{b.dimensions.width}mm)
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="C-input">
+                Dynamic load rating C (kN) <span class="text-theme-muted text-xs">— from bearing catalogue</span>
+              </label>
+              <input id="C-input" type="number" min="0.1" max="2000" step="0.1" placeholder="e.g. 14.0"
+                class="field w-full rounded-lg px-3 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="P-input">
+                Equivalent dynamic load P (kN) <span class="text-theme-muted text-xs">— applied bearing load</span>
+              </label>
+              <input id="P-input" type="number" min="0.01" max="2000" step="0.1" placeholder="e.g. 5.0"
+                class="field w-full rounded-lg px-3 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="n-input">
+                Rotational speed n (RPM)
+              </label>
+              <input id="n-input" type="number" min="1" max="100000" step="1" placeholder="e.g. 1450"
+                class="field w-full rounded-lg px-3 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1">
+                Bearing type
+              </label>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 text-sm text-theme-secondary cursor-pointer">
+                  <input type="radio" name="btype" value="ball" checked class="accent-radio" /> Ball (p = 3)
+                </label>
+                <label class="flex items-center gap-2 text-sm text-theme-secondary cursor-pointer">
+                  <input type="radio" name="btype" value="roller" class="accent-radio" /> Roller (p = 10/3)
+                </label>
+              </div>
+            </div>
+
+            <button id="calc-btn" class="w-full accent-bg hover:opacity-90 text-sm font-semibold py-2.5 rounded-lg transition-colors" style="color:#07090c;">
+              Calculate L10 Life
+            </button>
+          </div>
+        </div>
+
+        <!-- Formula card -->
+        <div class="card mt-4">
+          <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-2">ISO 281 Formula</p>
+          <div class="mono-block rounded-lg px-3 py-2 text-sm font-mono space-y-1">
+            <div>L10 = (C / P) ^ p</div>
+            <div>L10h = L10 × 10⁶ / (60 × n)</div>
+          </div>
+          <p class="text-xs text-theme-muted mt-2">p = 3 (ball) or 10/3 (roller). L10 in millions of revolutions, L10h in hours.</p>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="lg:col-span-3 space-y-4">
+        <div id="result-panel" class="result-panel rounded-xl p-6 hidden">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Results</h2>
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-theme-card rounded-lg p-4 border border-theme">
+              <p class="text-xs text-theme-muted mb-1">L10 (million rev)</p>
+              <p id="res-l10" class="text-2xl font-bold accent-text">—</p>
+            </div>
+            <div class="bg-theme-card rounded-lg p-4 border border-theme">
+              <p class="text-xs text-theme-muted mb-1">L10h (hours)</p>
+              <p id="res-l10h" class="text-2xl font-bold accent-text">—</p>
+            </div>
+          </div>
+          <div id="res-assessment" class="text-sm text-theme-secondary mb-4"></div>
+          <div id="res-sensitivity" class="hidden">
+            <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-2">Load Sensitivity</p>
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-theme">
+                  <th class="text-left py-1 text-theme-muted font-medium">Load P</th>
+                  <th class="text-right py-1 text-theme-muted font-medium">L10h</th>
+                  <th class="text-right py-1 text-theme-muted font-medium">vs. base</th>
+                </tr>
+              </thead>
+              <tbody id="sensitivity-rows" class="divide-y divide-theme"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="empty-state" class="result-panel rounded-xl p-6 flex flex-col items-center justify-center min-h-48 text-center">
+          <svg class="w-10 h-10 text-theme-muted mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <p class="text-theme-secondary text-sm">Enter C, P, and RPM, then click Calculate.</p>
+        </div>
+
+        <!-- Guidelines -->
+        <div class="card">
+          <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-3">Target L10h by Application</p>
+          <div class="space-y-1.5 text-sm">
+            {[
+              ['Electric motors (8h/day)', '20,000–40,000 h'],
+              ['Industrial pumps', '17,500+ h'],
+              ['Industrial gearboxes', '30,000 h'],
+              ['Agricultural machinery', '3,000–5,000 h'],
+              ['Conveyor systems', '30,000–100,000 h'],
+            ].map(([app, life]) => (
+              <div class="flex justify-between">
+                <span class="text-theme-secondary">{app}</span>
+                <span class="font-mono text-theme-primary">{life}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-theme-primary mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4 max-w-3xl">
+        {faqItems.map(({ question, answer }) => (
+          <div class="card">
+            <h3 class="font-semibold text-theme-primary mb-2">{question}</h3>
+            <p class="text-sm text-theme-secondary">{answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="disclaimer rounded-lg p-4 mt-8 text-sm max-w-3xl">
+      <strong>Disclaimer:</strong> This tool provides ISO 281 basic rating life (L10) as a guide for initial bearing selection. Modified rating life (Lnmh) per ISO 281:2007/Amd.2:2012 depends on contamination, lubrication adequacy, and operating conditions not captured here. Always verify with manufacturer data for critical applications.
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+(function () {
+  const sel    = document.getElementById('model-select');
+  const cInput = document.getElementById('C-input');
+  const pInput = document.getElementById('P-input');
+  const nInput = document.getElementById('n-input');
+  const btn    = document.getElementById('calc-btn');
+  const panel  = document.getElementById('result-panel');
+  const empty  = document.getElementById('empty-state');
+
+  sel.addEventListener('change', function () {
+    const opt = sel.options[sel.selectedIndex];
+    if (opt.value) {
+      cInput.value = opt.dataset.c;
+      if (!nInput.value) nInput.value = opt.dataset.n;
+    }
+  });
+
+  btn.addEventListener('click', calculate);
+  [cInput, pInput, nInput].forEach(function (el) {
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter') calculate(); });
+  });
+
+  function calculate() {
+    const C = parseFloat(cInput.value);
+    const P = parseFloat(pInput.value);
+    const n = parseFloat(nInput.value);
+    const pExp = document.querySelector('input[name="btype"]:checked').value === 'ball' ? 3 : 10/3;
+
+    if (!C || !P || !n || C <= 0 || P <= 0 || n <= 0) {
+      cInput.classList.toggle('border-red-400', !C || C <= 0);
+      pInput.classList.toggle('border-red-400', !P || P <= 0);
+      nInput.classList.toggle('border-red-400', !n || n <= 0);
+      return;
+    }
+
+    const L10  = Math.pow(C / P, pExp);
+    const L10h = (L10 * 1e6) / (60 * n);
+
+    document.getElementById('res-l10').textContent  = L10.toFixed(2);
+    document.getElementById('res-l10h').textContent = formatHours(L10h);
+
+    const assessEl = document.getElementById('res-assessment');
+    assessEl.innerHTML = getAssessment(L10h);
+
+    // Sensitivity table
+    const sensDiv  = document.getElementById('res-sensitivity');
+    const sensBody = document.getElementById('sensitivity-rows');
+    const factors  = [0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.5, 2.0];
+    sensBody.innerHTML = factors.map(function (f) {
+      const Ph   = P * f;
+      const Lh   = (Math.pow(C / Ph, pExp) * 1e6) / (60 * n);
+      const pct  = ((Lh / L10h) * 100).toFixed(0);
+      const cls  = f === 1.0 ? 'accent-text font-semibold' : 'text-theme-secondary';
+      return '<tr class="text-sm ' + cls + '">' +
+        '<td class="py-1">' + Ph.toFixed(2) + ' kN' + (f === 1.0 ? ' ← current' : '') + '</td>' +
+        '<td class="py-1 text-right font-mono">' + formatHours(Lh) + '</td>' +
+        '<td class="py-1 text-right text-theme-muted">' + pct + '%</td>' +
+      '</tr>';
+    }).join('');
+    sensDiv.classList.remove('hidden');
+
+    panel.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'tool_complete', { tool_name: 'bearing-life-calculator', l10h: Math.round(L10h) });
+    }
+  }
+
+  function formatHours(h) {
+    if (h >= 100000) return (h / 1000).toFixed(0) + 'k h';
+    if (h >= 10000)  return (h / 1000).toFixed(1) + 'k h';
+    if (h >= 1000)   return (h / 1000).toFixed(2) + 'k h';
+    return h.toFixed(0) + ' h';
+  }
+
+  function getAssessment(h) {
+    if (h < 5000)   return '<span class="text-red-400 font-medium">⚠ Very short life</span> — consider a larger bearing or reducing load.';
+    if (h < 20000)  return '<span class="text-amber-400 font-medium">↑ Marginal</span> — acceptable for light-duty or easily replaced applications.';
+    if (h < 50000)  return '<span class="text-green-400 font-medium">✓ Good</span> — suitable for most industrial motor and pump applications.';
+    if (h < 100000) return '<span class="text-green-400 font-medium">✓ Excellent</span> — long service life, appropriate for continuous operation.';
+    return '<span class="accent-text font-medium">★ Outstanding</span> — exceeds typical service intervals. Lubrication may become the limiting factor.';
+  }
+})();
+</script>

@@ -1,0 +1,259 @@
+---
+import Base from '../../layouts/Base.astro';
+import { DIAM_RANGES, SHAFT_TOLERANCES, HOUSING_TOLERANCES } from '../../data/tolerance-data';
+
+const title = 'Bearing Fit Calculator — ISO 286 Shaft & Housing Tolerance | BearingCalculators';
+const description = 'Free ISO 286 bearing fit calculator. Enter shaft and housing diameter with tolerance grade to get clearance or interference, fit type, and mounting recommendation.';
+
+const shaftGrades  = ['h5','h6','js5','js6','k5','k6','m5','m6','n6','p6'] as const;
+const housingGrades = ['H6','H7','JS6','JS7','K6','K7','M6','M7','N7','P7'] as const;
+
+const tolData = {
+  ranges: DIAM_RANGES.map(r => ({ min: r.min, max: r.max, label: r.label })),
+  shaft:   Object.fromEntries(shaftGrades.map(g => [g, SHAFT_TOLERANCES[g]])),
+  housing: Object.fromEntries(housingGrades.map(g => [g, HOUSING_TOLERANCES[g]])),
+};
+---
+<Base title={title} description={description} breadcrumbItems={[{ name: 'Bearing Fit Calculator', url: '/bearing-calculator/' }]}>
+
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Bearing Fit Calculator</h1>
+      <p class="text-theme-secondary">ISO 286 shaft and housing tolerance analysis — calculate clearance, transition, or interference fit for bearing mounting.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+      <!-- Inputs -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Inputs</h2>
+          <div class="space-y-4">
+            <fieldset>
+              <legend class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-2">Shaft (Inner Ring)</legend>
+              <div class="space-y-2">
+                <div>
+                  <label class="text-sm text-theme-secondary" for="shaft-d">Shaft diameter (mm)</label>
+                  <input id="shaft-d" type="number" min="1" max="400" step="0.001" placeholder="e.g. 25"
+                    class="field w-full rounded-lg px-3 py-2 text-sm mt-1" />
+                </div>
+                <div>
+                  <label class="text-sm text-theme-secondary" for="shaft-grade">Shaft tolerance grade</label>
+                  <select id="shaft-grade" class="field w-full rounded-lg px-3 py-2 text-sm mt-1">
+                    <optgroup label="Clearance (rotating outer ring)">
+                      <option value="h5">h5 — precision clearance</option>
+                      <option value="h6">h6 — general clearance</option>
+                    </optgroup>
+                    <optgroup label="Transition (recommended for inner ring)">
+                      <option value="js5">js5 — symmetric ±IT5/2</option>
+                      <option value="js6" selected>js6 — symmetric ±IT6/2</option>
+                      <option value="k5">k5 — light transition</option>
+                      <option value="k6">k6 — standard transition ★</option>
+                    </optgroup>
+                    <optgroup label="Interference (heavy/shock loads)">
+                      <option value="m5">m5 — medium interference</option>
+                      <option value="m6">m6 — medium interference</option>
+                      <option value="n6">n6 — heavy interference</option>
+                      <option value="p6">p6 — press fit</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-2">Housing Bore (Outer Ring)</legend>
+              <div class="space-y-2">
+                <div>
+                  <label class="text-sm text-theme-secondary" for="housing-d">Housing bore diameter (mm)</label>
+                  <input id="housing-d" type="number" min="1" max="400" step="0.001" placeholder="e.g. 52"
+                    class="field w-full rounded-lg px-3 py-2 text-sm mt-1" />
+                </div>
+                <div>
+                  <label class="text-sm text-theme-secondary" for="housing-grade">Housing tolerance grade</label>
+                  <select id="housing-grade" class="field w-full rounded-lg px-3 py-2 text-sm mt-1">
+                    <optgroup label="Clearance (stationary outer ring)">
+                      <option value="H6">H6 — precision clearance</option>
+                      <option value="H7" selected>H7 — general clearance ★</option>
+                    </optgroup>
+                    <optgroup label="Transition">
+                      <option value="JS6">JS6 — symmetric</option>
+                      <option value="JS7">JS7 — symmetric</option>
+                      <option value="K6">K6 — transition</option>
+                      <option value="K7">K7 — transition</option>
+                    </optgroup>
+                    <optgroup label="Interference (rotating outer ring)">
+                      <option value="M6">M6</option>
+                      <option value="M7">M7</option>
+                      <option value="N7">N7 — heavy</option>
+                      <option value="P7">P7 — press</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <button id="calc-btn" class="w-full accent-bg hover:opacity-90 text-sm font-semibold py-2.5 rounded-lg transition-colors" style="color:#07090c;">
+              Analyze Fit
+            </button>
+          </div>
+        </div>
+
+        <!-- ISO Recommendation quick-ref -->
+        <div class="card">
+          <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-3">ISO Recommendation Quick Ref</p>
+          <div class="space-y-2 text-xs text-theme-secondary">
+            <p class="font-medium text-theme-primary">Shaft (inner ring)</p>
+            <p>Rotating load: <span class="font-mono">k5/k6</span> (light→normal) | <span class="font-mono">m6</span> (heavy)</p>
+            <p>Stationary load: <span class="font-mono">h6/js6</span></p>
+            <p class="font-medium text-theme-primary mt-2">Housing (outer ring)</p>
+            <p>Stationary: <span class="font-mono">H7</span> (most cases)</p>
+            <p>Rotating outer: <span class="font-mono">M7/N7</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="lg:col-span-3">
+        <div id="result-panel" class="hidden space-y-4">
+          <div class="card">
+            <h2 class="text-lg font-semibold text-theme-primary mb-4">Fit Analysis</h2>
+            <div id="fit-badge" class="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-4"></div>
+            <div id="fit-description" class="text-theme-secondary mb-4 text-sm"></div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="bg-theme-card rounded-lg p-3 border border-theme">
+                <p class="text-xs text-theme-muted">Max clearance / min interference</p>
+                <p id="res-max" class="text-xl font-bold font-mono mt-1"></p>
+              </div>
+              <div class="bg-theme-card rounded-lg p-3 border border-theme">
+                <p class="text-xs text-theme-muted">Min clearance / max interference</p>
+                <p id="res-min" class="text-xl font-bold font-mono mt-1"></p>
+              </div>
+            </div>
+
+            <div id="tolerance-breakdown" class="mb-4"></div>
+            <div id="recommendation" class="p-3 rounded-lg bg-theme-tertiary text-sm text-theme-secondary"></div>
+          </div>
+        </div>
+
+        <div id="empty-state" class="result-panel rounded-xl p-8 flex flex-col items-center justify-center min-h-52 text-center">
+          <svg class="w-10 h-10 text-theme-muted mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+          </svg>
+          <p class="text-theme-secondary text-sm">Enter shaft and housing dimensions, then click Analyze Fit.</p>
+        </div>
+
+        <div class="disclaimer rounded-lg p-4 mt-4 text-sm">
+          <strong>Note:</strong> Values from ISO 286-1:2010. This covers only the geometric tolerance fit. Thermal expansion, mounting method (press/shrink), and bearing internal clearance class must be considered separately.
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ tolData }}>
+(function () {
+  var data     = tolData;
+  var calcBtn  = document.getElementById('calc-btn');
+  var panel    = document.getElementById('result-panel');
+  var empty    = document.getElementById('empty-state');
+
+  calcBtn.addEventListener('click', analyze);
+
+  function getRangeIdx(d) {
+    return data.ranges.findIndex(function (r) { return d > r.min && d <= r.max; });
+  }
+
+  function analyze() {
+    var shaftD    = parseFloat(document.getElementById('shaft-d').value);
+    var shaftG    = document.getElementById('shaft-grade').value;
+    var housingD  = parseFloat(document.getElementById('housing-d').value);
+    var housingG  = document.getElementById('housing-grade').value;
+
+    if (!shaftD || !housingD || shaftD <= 0 || housingD <= 0) return;
+
+    var si = getRangeIdx(shaftD);
+    var hi = getRangeIdx(housingD);
+
+    if (si === -1 || hi === -1) {
+      alert('Diameter out of ISO 286 range (1–400 mm).');
+      return;
+    }
+
+    var sTol = data.shaft[shaftG][si];   // [es, ei] upper, lower
+    var hTol = data.housing[housingG][hi]; // [ES, EI]
+
+    // Clearance = hole - shaft; positive = clearance, negative = interference
+    var maxClear = hTol[0] - sTol[1]; // ES - ei
+    var minClear = hTol[1] - sTol[0]; // EI - es
+
+    var fitType, badgeClass, fitLabel;
+    if (minClear >= 0) {
+      fitType = 'clearance'; fitLabel = 'Clearance Fit';
+      badgeClass = 'bg-blue-500/10 text-blue-400 border border-blue-400/30';
+    } else if (maxClear <= 0) {
+      fitType = 'interference'; fitLabel = 'Interference Fit';
+      badgeClass = 'bg-red-500/10 text-red-400 border border-red-400/30';
+    } else {
+      fitType = 'transition'; fitLabel = 'Transition Fit';
+      badgeClass = 'bg-amber-400/10 text-amber-400 border border-amber-400/30';
+    }
+
+    document.getElementById('fit-badge').className = 'inline-block px-3 py-1 rounded-full text-sm font-semibold mb-4 ' + badgeClass;
+    document.getElementById('fit-badge').textContent = fitLabel;
+
+    var desc = '';
+    if (fitType === 'clearance') {
+      desc = 'Clearance of <strong>' + minClear + '</strong> to <strong>' + maxClear + '</strong> μm. Assembly by hand or light mallet.';
+    } else if (fitType === 'interference') {
+      var minInt = -maxClear, maxInt = -minClear;
+      desc = 'Interference of <strong>' + minInt + '</strong> to <strong>' + maxInt + '</strong> μm. Requires press or thermal mounting.';
+    } else {
+      desc = 'Range <strong>' + minClear + '</strong> to <strong>+' + maxClear + '</strong> μm — may be clearance or interference depending on actual part dimensions.';
+    }
+    document.getElementById('fit-description').innerHTML = desc;
+
+    document.getElementById('res-max').textContent = (maxClear >= 0 ? '+' : '') + maxClear + ' μm';
+    document.getElementById('res-min').textContent = (minClear >= 0 ? '+' : '') + minClear + ' μm';
+
+    document.getElementById('tolerance-breakdown').innerHTML =
+      '<p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-2">Tolerance Breakdown</p>' +
+      '<table class="w-full text-sm">' +
+      '<thead><tr class="border-b border-theme">' +
+      '<th class="text-left py-1.5 text-theme-muted font-medium">Feature</th>' +
+      '<th class="text-right py-1.5 text-theme-muted font-medium">Upper (μm)</th>' +
+      '<th class="text-right py-1.5 text-theme-muted font-medium">Lower (μm)</th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+      '<tr class="border-b border-theme">' +
+      '<td class="py-1.5 text-theme-secondary">Housing bore (' + housingG + ', ∅' + housingD + 'mm)</td>' +
+      '<td class="py-1.5 text-right font-mono text-theme-primary">' + (hTol[0] >= 0 ? '+' : '') + hTol[0] + '</td>' +
+      '<td class="py-1.5 text-right font-mono text-theme-primary">' + (hTol[1] >= 0 ? '+' : '') + hTol[1] + '</td>' +
+      '</tr>' +
+      '<tr>' +
+      '<td class="py-1.5 text-theme-secondary">Shaft (' + shaftG + ', ∅' + shaftD + 'mm)</td>' +
+      '<td class="py-1.5 text-right font-mono text-theme-primary">' + (sTol[0] >= 0 ? '+' : '') + sTol[0] + '</td>' +
+      '<td class="py-1.5 text-right font-mono text-theme-primary">' + (sTol[1] >= 0 ? '+' : '') + sTol[1] + '</td>' +
+      '</tr>' +
+      '</tbody></table>';
+
+    var rec = getRecommendation(shaftG, housingG, fitType);
+    document.getElementById('recommendation').innerHTML = '<strong>Recommendation:</strong> ' + rec;
+
+    panel.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'tool_complete', { tool_name: 'bearing-fit-calculator', fit_type: fitType });
+    }
+  }
+
+  function getRecommendation(sg, hg, fitType) {
+    if (sg === 'k6' && hg === 'H7') return 'k6/H7 — the most common bearing mounting combination. Suitable for standard rotating inner ring applications (motors, pumps, gearboxes).';
+    if (sg === 'h6' && (hg === 'H7' || hg === 'H6')) return 'h6/' + hg + ' — clearance fit on both rings, suitable for bearings with rotating outer ring or where rings must be removable.';
+    if (fitType === 'clearance') return 'Clearance fit allows easy assembly and axial adjustment. Ensure the ring does not creep in service; add locking if needed.';
+    if (fitType === 'interference') return 'Interference fit prevents ring rotation (fretting corrosion). Use thermal mounting (heat housing or cool shaft) to 80–100°C temperature differential.';
+    return 'Transition fit. Actual assembly may yield slight clearance or interference. Inspect individual part dimensions; use press or light mallet as needed.';
+  }
+})();
+</script>

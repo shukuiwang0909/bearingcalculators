@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page Not Found | BearingCalculators" description="The page you requested could not be found." robots="noindex,nofollow">
+  <section class="max-w-xl mx-auto px-4 py-24 text-center">
+    <p class="text-8xl font-bold accent-text mb-4">404</p>
+    <h1 class="text-2xl font-bold text-theme-primary mb-3">Page not found</h1>
+    <p class="text-theme-secondary mb-8">The bearing you're looking for might have moved. Try the size chart or search for a model number.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/bearing-size-chart/" class="accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90" style="color:#07090c;">Bearing Size Chart</a>
+      <a href="/bearing-interchange/" class="border border-theme text-theme-secondary hover:text-theme-primary text-sm px-4 py-2 rounded-lg transition-colors">Interchange Tool</a>
+      <a href="/" class="border border-theme text-theme-secondary hover:text-theme-primary text-sm px-4 py-2 rounded-lg transition-colors">Home</a>
+    </div>
+  </section>
+</Base>

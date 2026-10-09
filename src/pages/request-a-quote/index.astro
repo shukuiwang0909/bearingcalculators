@@ -1,0 +1,173 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const title = 'Request a Quote — Chinese Bearing Manufacturers | BearingCalculators';
+const description = 'Get factory-direct pricing from C&U, ZWZ, LYC, and HRB bearing manufacturers. FOB/CIF quotes for 6200/6300/6000 series deep groove ball bearings.';
+---
+<Base title={title} description={description} robots="index,follow">
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Request a Quote</h1>
+      <p class="text-theme-secondary">Get factory-direct pricing from C&U, ZWZ, LYC, and HRB. Standard lead time: 3–7 days for stock items.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Form -->
+      <div class="lg:col-span-2">
+        <div class="card">
+          <form id="rfq-form" novalidate>
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="name">Name <span class="text-red-400">*</span></label>
+                <input id="name" name="name" type="text" required class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="Your full name" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="company">Company <span class="text-red-400">*</span></label>
+                <input id="company" name="company" type="text" required class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="Company or organization" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="email">Email <span class="text-red-400">*</span></label>
+                <input id="email" name="email" type="email" required class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="you@company.com" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="+1 555 000 0000" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="country">Country / Region</label>
+                <input id="country" name="country" type="text" class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. United States, Germany" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="bearing-type">Bearing Type</label>
+                <select id="bearing-type" name="bearing_type" class="field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="">— Select series —</option>
+                  <option>6200 Series (6200–6206)</option>
+                  <option>6300 Series (6304–6309)</option>
+                  <option>6000 Series (6004–6006)</option>
+                  <option>Specific model(s) — listed in notes</option>
+                  <option>Multiple series</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="quantity">Quantity (pcs)</label>
+                <input id="quantity" name="quantity" type="number" min="1" class="field w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. 500" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-theme-secondary mb-1" for="certification">Certification Required</label>
+                <select id="certification" name="certification" class="field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="">None / Standard</option>
+                  <option>ISO 9001</option>
+                  <option>IATF 16949 (automotive)</option>
+                  <option>API (oil &amp; gas)</option>
+                  <option>Other (specify in notes)</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="notes">Bearing models, special requirements, or notes</label>
+              <textarea id="notes" name="notes" rows="4" class="field w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="e.g. 6205 2RS1, 500 pcs; 6308 open, 200 pcs. Specify precision grade (P0/P6/P5) if required. FOB Shanghai preferred."></textarea>
+            </div>
+
+            <div id="form-error" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-400/30 text-sm text-red-400"></div>
+
+            <button type="submit" id="submit-btn" class="w-full accent-bg hover:opacity-90 font-semibold py-3 rounded-lg transition-colors text-sm" style="color:#07090c;">
+              Submit Inquiry
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-4">
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">How It Works</h3>
+          <ol class="space-y-3 text-sm text-theme-secondary">
+            {[
+              ['Submit form', 'Fill in your model, quantity, and contact details.'],
+              ['Get quotes', 'We forward your request to verified Chinese factories within 24h.'],
+              ['Compare & order', 'Review FOB/CIF prices, lead times, and factory certifications.'],
+            ].map(([step, desc], i) => (
+              <li class="flex gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full accent-bg text-xs font-bold flex items-center justify-center mt-0.5" style="color:#07090c;">{i+1}</span>
+                <div><p class="font-medium text-theme-primary">{step}</p><p class="text-xs mt-0.5">{desc}</p></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">Suppliers We Work With</h3>
+          <ul class="text-sm text-theme-secondary space-y-1.5">
+            {[
+              ['C&U', 'Changzhou — largest DGBB exporter'],
+              ['ZWZ', 'Zhejiang — precision P0–P5'],
+              ['LYC', 'Luoyang — full-range, API cert'],
+              ['HRB', 'Harbin — budget-friendly'],
+            ].map(([name, desc]) => (
+              <li class="flex justify-between">
+                <span class="font-semibold text-theme-primary">{name}</span>
+                <span class="text-xs text-theme-muted">{desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-2">Calculators</h3>
+          <ul class="text-sm space-y-1">
+            {[
+              ['/bearing-life-calculator/', 'Bearing Life Calculator'],
+              ['/bearing-interchange/', 'Bearing Interchange'],
+              ['/bearing-calculator/', 'Bearing Fit Calculator'],
+              ['/bearing-size-chart/', 'Bearing Size Chart'],
+            ].map(([href, label]) => (
+              <li><a href={href} class="text-theme-secondary hover:accent-text transition-colors">{label} →</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+(function () {
+  var form  = document.getElementById('rfq-form');
+  var btn   = document.getElementById('submit-btn');
+  var errEl = document.getElementById('form-error');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    fetch('https://formspree.io/f/xaenyjzq', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form),
+    })
+    .then(function (res) {
+      if (res.ok) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'rfq_submit', { page: 'request-a-quote' });
+        }
+        window.location.href = '/request-a-quote/thanks/';
+      } else {
+        res.json().then(function (d) {
+          errEl.textContent = (d.errors || []).map(function(x){return x.message;}).join(', ') || 'Submission failed. Please try again.';
+          errEl.classList.remove('hidden');
+          btn.textContent = 'Submit Inquiry';
+          btn.disabled = false;
+        });
+      }
+    })
+    .catch(function () {
+      errEl.textContent = 'Network error. Please check your connection and try again.';
+      errEl.classList.remove('hidden');
+      btn.textContent = 'Submit Inquiry';
+      btn.disabled = false;
+    });
+  });
+})();
+</script>

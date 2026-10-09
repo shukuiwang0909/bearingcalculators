@@ -1,0 +1,344 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  jsonLd?: unknown | unknown[];
+  ctaHref?: string;
+  robots?: string;
+  gaId?: string;
+  gscVerification?: string;
+  breadcrumbItems?: Array<{ name: string; url: string }>;
+  ogType?: "website" | "article";
+  pubDate?: string;
+}
+
+const {
+  title,
+  description = "Free bearing calculators — dimensions, ISO 281 life calculation, brand interchange, and Chinese supplier quotes.",
+  canonical: canonicalProp,
+  jsonLd,
+  ctaHref = "#calculator",
+  robots,
+  gaId,
+  gscVerification,
+  breadcrumbItems,
+  ogType = "website",
+  pubDate,
+} = Astro.props;
+
+const siteOrigin = "https://bearingcalculators.com";
+const GA4_ID = "G-XXXXXXXXXX"; // TODO: replace with real GA4 property ID
+
+const rawPath = Astro.url.pathname.replace(/\/?$/, "/");
+const canonical = canonicalProp ?? `${siteOrigin}${rawPath}`;
+const ogImage = `${siteOrigin}/og-image.png`;
+const currentPath = Astro.url.pathname;
+
+const navGroups = [
+  {
+    label: "Calculators",
+    items: [
+      { href: "/bearing-life-calculator/", label: "Bearing Life Calculator" },
+      { href: "/bearing-interchange/",     label: "Bearing Interchange" },
+      { href: "/bearing-calculator/",      label: "Bearing Fit Calculator" },
+    ],
+  },
+  {
+    label: "Reference",
+    items: [
+      { href: "/bearing-size-chart/", label: "Bearing Size Chart" },
+      { href: "/blog/",               label: "Blog & Guides" },
+    ],
+  },
+];
+
+const siteJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteOrigin}/#organization`,
+    "name": "Bearing Calculators",
+    "url": siteOrigin,
+    "logo": `${siteOrigin}/favicon.svg`,
+    "description": "Free ISO 281 bearing calculators, brand interchange, and Chinese supplier quotes for procurement engineers and maintenance teams.",
+    "areaServed": "Worldwide",
+    "knowsAbout": [
+      "ISO 281 bearing life calculation",
+      "deep groove ball bearing dimensions",
+      "bearing brand interchange SKF NSK FAG",
+      "Chinese bearing manufacturers C&U LYC HRB ZWZ",
+      "bearing fit ISO 286",
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "url": `${siteOrigin}/request-a-quote/`,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteOrigin}/#website`,
+    "url": siteOrigin,
+    "name": "Bearing Calculators",
+    "publisher": { "@id": `${siteOrigin}/#organization` },
+    "inLanguage": "en",
+  },
+  ...(breadcrumbItems ? [{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbItems.map((item, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": item.name,
+      "item": `${siteOrigin}${item.url}`,
+    })),
+  }] : []),
+  ...(Array.isArray(jsonLd) ? jsonLd : (jsonLd ? [jsonLd] : [])),
+];
+---
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {robots && <meta name="robots" content={robots} />}
+    {gscVerification && <meta name="google-site-verification" content={gscVerification} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Bearing Calculators" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    {ogType === "article" && pubDate && <meta property="article:published_time" content={pubDate} />}
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <!-- GA4 -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+    <script is:inline define:vars={{ GA4_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){dataLayer.push(arguments);};
+      window.gtag('js', new Date());
+      window.gtag('config', GA4_ID);
+    </script>
+    <!-- JSON-LD -->
+    {siteJsonLd.map(obj => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+    <!-- Dark mode init (prevents FOUC) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col relative">
+    <div class="tech-grid"></div>
+    <header class="glass sticky top-0 z-50 border-b border-theme">
+      <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
+        <a href="/" class="font-bold text-lg tracking-tight" style="color: var(--text-primary)">
+          Bearing<span class="accent-text">Calculators</span>
+        </a>
+        <nav class="hidden md:flex gap-5 text-sm items-center">
+          {navGroups.map((g) => {
+            const isActive = g.items.some((n) => currentPath === n.href || (n.href !== "/" && currentPath.startsWith(n.href)));
+            const linkCls = `transition-colors relative ${isActive ? "accent-text font-semibold" : "text-theme-secondary hover:text-theme-primary"}`;
+            return (
+              <div class="nav-dropdown relative">
+                <button class={`${linkCls} flex items-center gap-1 py-4`} aria-haspopup="true">
+                  {g.label}
+                  <svg class="h-3 w-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  {isActive && <span class="absolute -bottom-[1px] left-0 right-0 h-0.5 accent-bg"></span>}
+                </button>
+                <div class="nav-dropdown-menu absolute left-0 top-full pt-1 z-50">
+                  <div class="rounded-xl border border-theme bg-theme-primary shadow-xl py-2 min-w-52">
+                    {g.items.map((n) => {
+                      const isItemActive = currentPath === n.href || (n.href !== "/" && currentPath.startsWith(n.href));
+                      return (
+                        <a href={n.href} class={`block px-4 py-2 whitespace-nowrap transition-colors ${isItemActive ? "accent-text font-semibold bg-theme-tertiary" : "text-theme-secondary hover:text-theme-primary hover:bg-theme-tertiary"}`}>
+                          {n.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          <a href="/bearing-size-chart/" class={`transition-colors ${currentPath.startsWith('/bearing-size-chart') ? 'accent-text font-semibold' : 'text-theme-secondary hover:text-theme-primary'}`}>
+            Size Chart
+          </a>
+        </nav>
+        <div class="flex items-center gap-2 md:gap-3">
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg border border-theme hover:bg-theme-tertiary transition-colors" aria-label="Open menu">
+            <svg class="w-5 h-5 text-theme-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+          <button id="theme-toggle" class="p-2 rounded-lg border border-theme hover:bg-theme-tertiary transition-colors" aria-label="Toggle theme">
+            <svg class="w-4 h-4 hidden dark:block accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <svg class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+          <a href="/request-a-quote/" class="hidden sm:inline-block accent-bg hover:opacity-90 text-sm font-semibold px-3 md:px-4 py-2 rounded-lg transition-colors" style="color: #07090c;">
+            Get a Quote
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 hidden">
+      <div id="mobile-menu-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute top-14 left-0 right-0 bg-theme-primary border-b border-theme shadow-xl overflow-y-auto max-h-[calc(100vh-3.5rem)]">
+        <nav class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-1">
+          {navGroups.map((g) => (
+            <div class="mb-1">
+              <p class="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-widest text-theme-muted">{g.label}</p>
+              {g.items.map((n) => {
+                const isActive = currentPath === n.href || (n.href !== "/" && currentPath.startsWith(n.href));
+                return (
+                  <a href={n.href} class={`mobile-menu-link block py-2.5 pl-6 pr-4 rounded-lg transition-colors text-sm font-medium ${isActive ? "accent-text bg-theme-tertiary" : "text-theme-secondary hover:text-theme-primary hover:bg-theme-tertiary"}`}>{n.label}</a>
+                );
+              })}
+            </div>
+          ))}
+          <a href="/request-a-quote/" class="mobile-menu-link mt-2 py-3 px-4 rounded-lg accent-bg text-center font-semibold" style="color: #07090c;">
+            Get a Quote
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="flex-1 relative z-10">
+      <slot />
+    </main>
+
+    <footer class="bg-theme-secondary border-t border-theme text-theme-secondary text-sm mt-16 relative z-10">
+      <div class="max-w-6xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <p class="text-theme-primary font-semibold mb-2">BearingCalculators</p>
+          <p>Free ISO 281 bearing calculators, brand interchange, and factory-direct Chinese supplier quotes.</p>
+        </div>
+        <div>
+          <p class="text-theme-primary font-semibold mb-2">Calculators</p>
+          <ul class="space-y-1">
+            <li><a href="/bearing-life-calculator/" class="hover:text-theme-primary transition-colors">Bearing Life Calculator</a></li>
+            <li><a href="/bearing-interchange/"     class="hover:text-theme-primary transition-colors">Bearing Interchange</a></li>
+            <li><a href="/bearing-calculator/"      class="hover:text-theme-primary transition-colors">Bearing Fit Calculator</a></li>
+            <li><a href="/bearing-size-chart/"      class="hover:text-theme-primary transition-colors">Bearing Size Chart</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-theme-primary font-semibold mb-2">Popular Models</p>
+          <ul class="space-y-1">
+            <li><a href="/6205-bearing/" class="hover:text-theme-primary transition-colors">6205 Bearing</a></li>
+            <li><a href="/6204-bearing/" class="hover:text-theme-primary transition-colors">6204 Bearing</a></li>
+            <li><a href="/6203-bearing/" class="hover:text-theme-primary transition-colors">6203 Bearing</a></li>
+            <li><a href="/6305-bearing/" class="hover:text-theme-primary transition-colors">6305 Bearing</a></li>
+            <li><a href="/6206-bearing/" class="hover:text-theme-primary transition-colors">6206 Bearing</a></li>
+            <li><a href="/6308-bearing/" class="hover:text-theme-primary transition-colors">6308 Bearing</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-theme-primary font-semibold mb-2">Resources</p>
+          <ul class="space-y-1 mb-3">
+            <li><a href="/blog/"              class="hover:text-theme-primary transition-colors">Blog & Guides</a></li>
+            <li><a href="/request-a-quote/"   class="hover:text-theme-primary transition-colors">Request a Quote</a></li>
+            <li><a href="/about/"             class="hover:text-theme-primary transition-colors">About</a></li>
+            <li><a href="/privacy/"           class="hover:text-theme-primary transition-colors">Privacy Policy</a></li>
+            <li><a href="/disclaimer/"        class="hover:text-theme-primary transition-colors">Disclaimer</a></li>
+          </ul>
+          <p class="text-xs text-theme-muted">Dimensional data based on ISO 15:2017 and manufacturer catalogs. Verify critical specifications before procurement.</p>
+        </div>
+      </div>
+      <div class="border-t border-theme py-4 text-center text-xs text-theme-muted">
+        © {new Date().getFullYear()} BearingCalculators.com. Built for engineering professionals.
+      </div>
+    </footer>
+
+    <style>
+      .nav-dropdown-menu { display: none; }
+      .nav-dropdown:hover > .nav-dropdown-menu,
+      .nav-dropdown:focus-within > .nav-dropdown-menu { display: block; }
+    </style>
+
+    <script is:inline>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script>
+    <script is:inline>
+      (function() {
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        const links = document.querySelectorAll('.mobile-menu-link');
+        function openMenu()  { menu.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closeMenu() { menu.classList.add('hidden');    document.body.style.overflow = ''; }
+        btn?.addEventListener('click', () => menu.classList.contains('hidden') ? openMenu() : closeMenu());
+        backdrop?.addEventListener('click', closeMenu);
+        links.forEach(l => l.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.classList.contains('hidden')) closeMenu(); });
+      })();
+    </script>
+    <!-- GA4 custom events -->
+    <script is:inline>
+      (function() {
+        function gtagEvent(name, params) {
+          if (typeof gtag === 'function') gtag('event', name, params);
+        }
+        // tool_start
+        document.querySelectorAll('select, input[type="number"], input[type="text"]').forEach(function(el) {
+          el.addEventListener('change', function() {
+            gtagEvent('tool_start', { tool_name: document.title });
+          }, { once: true });
+        });
+        // tool_complete: result panel becomes visible
+        var resultPanels = document.querySelectorAll('.result-panel, #result, #results, [id*="result"]');
+        if (resultPanels.length && typeof MutationObserver !== 'undefined') {
+          var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+              if (m.type === 'childList' && m.addedNodes.length > 0) {
+                gtagEvent('tool_complete', { tool_name: document.title });
+                observer.disconnect();
+              }
+            });
+          });
+          resultPanels.forEach(function(p) { observer.observe(p, { childList: true, subtree: true }); });
+        }
+        // rfq_click
+        document.querySelectorAll('a[href*="request-a-quote"]').forEach(function(a) {
+          a.addEventListener('click', function() {
+            gtagEvent('rfq_click', { source_page: window.location.pathname });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+---
+import Base from '../layouts/Base.astro';
+import FaqJsonLd from '../components/FaqJsonLd.astro';
+import { BEARINGS, getBySeries } from '../data/bearing-models';
+
+const title = 'Bearing Calculators — ISO 281 Life, Interchange & Fit | BearingCalculators.com';
+const description = 'Free bearing calculators: ISO 281 L10 life, brand interchange (SKF/NSK/FAG/Timken), ISO 286 fit, and size chart. 15 DGBB models. Chinese supplier quotes.';
+
+const s6200 = getBySeries('6200');
+const s6300 = getBySeries('6300');
+const s6000 = getBySeries('6000');
+
+const faqItems = [
+  { question: 'Are SKF, NSK, FAG, and Chinese bearings interchangeable?', answer: 'Yes. Standard 6200/6300/6000 series deep groove ball bearings from all major brands (SKF, NSK, FAG, NTN, KOYO, Timken, and Chinese brands C&U, ZWZ, LYC, HRB) are dimensionally interchangeable per ISO 15:2017. They share the same bore, OD, and width dimensions.' },
+  { question: 'What is L10 bearing life and how do I calculate it?', answer: 'L10 is the basic ISO 281 rating life: the number of operating hours that 90% of a bearing group will survive under a given load. Formula: L10h = (C/P)³ × 10⁶ / (60 × n), where C is dynamic load rating, P is applied load (both in kN), and n is RPM. Use our Bearing Life Calculator above.' },
+  { question: 'What is the difference between 6200, 6300, and 6000 series?', answer: 'All are deep groove ball bearings. The 6200 series is the most common general-purpose series. The 6300 series has a heavier cross-section (larger OD and width at the same bore), offering significantly higher load ratings — the 6305 carries 60% more load than the 6205 at the same 25mm bore. The 6000 series is extra-thin, used in space-constrained motors and drives.' },
+  { question: 'What shaft tolerance should I use for bearing mounting?', answer: 'For a rotating inner ring (most applications), use shaft tolerance k6 for normal loads or m6 for heavy/shock loads. The housing bore is typically H7 for a stationary outer ring. Use our ISO 286 Bearing Fit Calculator for exact deviation values based on your shaft diameter.' },
+  { question: 'What is the minimum order quantity for Chinese bearings?', answer: 'Typical MOQ for Chinese bearing factories (C&U, ZWZ, LYC, HRB) is 50–100 pieces for standard 6200 series, and 10–50 pieces for larger sizes. FOB prices for 6205 range from $0.70–$1.50/pc depending on factory and volume. Request an exact quote via our RFQ form.' },
+];
+---
+<Base title={title} description={description}>
+  <FaqJsonLd items={faqItems} />
+
+  <!-- Hero -->
+  <section class="relative py-16 md:py-24 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <div class="inline-block text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full border border-orange-400/30 accent-text mb-4">
+        ISO 15:2017 · ISO 281 · ISO 286
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-theme-primary mb-4 leading-tight">
+        Bearing Calculators &<br class="hidden md:block" />
+        <span class="accent-text">Interchange Reference</span>
+      </h1>
+      <p class="text-lg text-theme-secondary max-w-2xl mx-auto mb-8">
+        ISO 281 life calculations, brand cross-reference, and factory-direct Chinese quotes — in one free tool.
+      </p>
+
+      <!-- Inline bearing lookup -->
+      <div class="max-w-xl mx-auto">
+        <div class="card flex gap-2 p-3">
+          <input id="hero-search" type="text" placeholder="Enter bearing model (e.g. 6205, 6304, 6005)..."
+            class="field flex-1 rounded-lg px-3 py-2 text-sm" autocomplete="off" />
+          <button id="hero-btn" class="accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors whitespace-nowrap" style="color:#07090c;">
+            Look Up
+          </button>
+        </div>
+        <div id="hero-result" class="hidden mt-2 card text-sm text-left"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator cards -->
+  <section class="max-w-6xl mx-auto px-4 pb-16">
+    <h2 class="text-2xl font-bold text-theme-primary mb-6 text-center">Free Bearing Tools</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[
+        { href: '/bearing-life-calculator/', icon: '⏱', title: 'Bearing Life Calculator', desc: 'ISO 281 L10 life — enter C, P, and RPM to get service hours.' },
+        { href: '/bearing-interchange/', icon: '↔', title: 'Bearing Interchange', desc: 'Cross-reference SKF, NSK, FAG, Timken, and Chinese equivalents.' },
+        { href: '/bearing-calculator/', icon: '⚙', title: 'Bearing Fit Calculator', desc: 'ISO 286 shaft and housing tolerance analysis.' },
+        { href: '/bearing-size-chart/', icon: '📐', title: 'Bearing Size Chart', desc: 'Lookup and reverse-search bore/OD/width for all series.' },
+      ].map(({ href, icon, title: t, desc }) => (
+        <a href={href} class="card block hover:no-underline group relative">
+          <div class="text-2xl mb-3">{icon}</div>
+          <h3 class="font-semibold text-theme-primary mb-1 group-hover:accent-text transition-colors">{t}</h3>
+          <p class="text-sm text-theme-secondary">{desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Series matrix -->
+  <section class="max-w-6xl mx-auto px-4 pb-20">
+    <h2 class="text-2xl font-bold text-theme-primary mb-2">Bearing Model Reference</h2>
+    <p class="text-theme-secondary mb-8">Dimensions, load ratings, and datasheets for all supported bearing series.</p>
+
+    {[
+      { series: '6200', label: '6200 Series — General Purpose', data: s6200, desc: 'Most common industrial series. Suitable for motors, fans, pumps, and conveyors.' },
+      { series: '6300', label: '6300 Series — Heavy Cross-Section', data: s6300, desc: 'Higher load capacity at the same bore size. Preferred for gearboxes and heavy loads.' },
+      { series: '6000', label: '6000 Series — Extra Thin', data: s6000, desc: 'Compact design for space-constrained electric motors and servo drives.' },
+    ].map(({ series, label, data, desc }) => (
+      <div class="mb-12">
+        <div class="flex items-baseline justify-between mb-3">
+          <h3 class="text-lg font-semibold text-theme-primary">{label}</h3>
+          <span class="text-xs text-theme-muted">{desc}</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {data.map(b => (
+            <a href={`/${b.model.toLowerCase()}-bearing/`}
+              class="card block hover:no-underline group p-4">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-mono font-bold text-lg group-hover:accent-text transition-colors text-theme-primary">{b.model}</span>
+                {b.availability.status === 'in-stock' && <span class="badge-in-stock text-xs px-1.5 py-0.5 rounded">In Stock</span>}
+              </div>
+              <p class="text-xs text-theme-muted font-mono">{b.dimensions.bore}×{b.dimensions.od}×{b.dimensions.width} mm</p>
+              <p class="text-xs text-theme-secondary mt-1">C = {b.loadRatings.dynamicC} kN</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- Brand intercept -->
+  <section class="bg-theme-secondary border-y border-theme py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-2xl font-bold text-theme-primary mb-2">Brand Interchange Coverage</h2>
+      <p class="text-theme-secondary mb-8">Find Chinese alternatives to SKF, NSK, FAG, Timken, and other premium brands — at 30–60% lower cost.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { href: '/skf-6205-equivalent/', brand: 'SKF', model: '6205', desc: 'SKF 6205 Chinese alternatives — ZWZ, LYC, C&U equivalents' },
+          { href: '/skf-6203-equivalent/', brand: 'SKF', model: '6203', desc: 'SKF 6203 Chinese alternatives — direct interchange' },
+          { href: '/nsk-6205-equivalent/', brand: 'NSK', model: '6205', desc: 'NSK 6205 Chinese alternatives — C&U, HRB equivalents' },
+          { href: '/timken-6205-equivalent/', brand: 'Timken', model: '6205', desc: 'Timken 6205 Chinese alternatives — budget options' },
+        ].map(({ href, brand, model, desc }) => (
+          <a href={href} class="card block hover:no-underline group">
+            <p class="text-xs text-theme-muted mb-1">{brand}</p>
+            <p class="font-mono font-bold text-xl text-theme-primary group-hover:accent-text transition-colors">{model}</p>
+            <p class="text-xs text-theme-secondary mt-2">{desc}</p>
+          </a>
+        ))}
+      </div>
+      <p class="text-sm text-theme-secondary mt-6">
+        Need a different model? Use the <a href="/bearing-interchange/" class="accent-text hover:underline">Bearing Interchange Tool</a> for any SKF, NSK, FAG, NTN, KOYO, NACHI, or Timken model.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-2xl font-bold text-theme-primary mb-8">Frequently Asked Questions</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      {faqItems.map(({ question, answer }) => (
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-2">{question}</h3>
+          <p class="text-sm text-theme-secondary">{answer}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-6xl mx-auto px-4 pb-20">
+    <div class="card text-center py-12 relative overflow-hidden">
+      <div class="card-accent absolute inset-x-0 top-0"></div>
+      <h2 class="text-2xl font-bold text-theme-primary mb-2">Ready to Source?</h2>
+      <p class="text-theme-secondary mb-6 max-w-lg mx-auto">Get factory-direct pricing from C&U, ZWZ, LYC, and HRB. FOB or CIF quotes, 3–7 day standard lead time for stock sizes.</p>
+      <a href="/request-a-quote/" class="inline-block accent-bg hover:opacity-90 font-semibold px-6 py-3 rounded-lg transition-colors text-sm" style="color:#07090c;">
+        Request a Quote →
+      </a>
+    </div>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ bearingData: BEARINGS.map(b => ({ model: b.model, bore: b.dimensions.bore, od: b.dimensions.od, width: b.dimensions.width, C: b.loadRatings.dynamicC, C0: b.loadRatings.staticC0 })) }}>
+(function () {
+  var inp = document.getElementById('hero-search');
+  var btn = document.getElementById('hero-btn');
+  var out = document.getElementById('hero-result');
+
+  function doSearch() {
+    var q = inp.value.trim().toUpperCase().replace(/[-\s]/g, '');
+    if (!q) return;
+    var match = bearingData.find(function (b) { return b.model.toUpperCase() === q; });
+    if (!match) {
+      var partial = bearingData.filter(function (b) { return b.model.includes(q); });
+      if (partial.length === 0) {
+        out.innerHTML = '<p class="text-theme-secondary text-sm">No match found for <span class="font-mono accent-text">' + q + '</span>. Supported: 6200–6206, 6304–6309, 6004–6006.</p>';
+      } else {
+        out.innerHTML = '<p class="text-xs text-theme-muted mb-2">Did you mean:</p>' + partial.map(function (b) {
+          return '<a href="/' + b.model.toLowerCase() + '-bearing/" class="inline-block mr-2 mb-1 px-3 py-1 rounded-lg border border-theme hover:border-orange-400 font-mono text-sm text-theme-secondary hover:accent-text transition-colors">' + b.model + '</a>';
+        }).join('');
+      }
+    } else {
+      out.innerHTML =
+        '<div class="flex items-center gap-3">' +
+        '<div>' +
+        '<a href="/' + match.model.toLowerCase() + '-bearing/" class="font-mono text-xl font-bold accent-text hover:underline">' + match.model + '</a>' +
+        '<p class="text-xs text-theme-muted mt-0.5">' + match.bore + '×' + match.od + '×' + match.width + 'mm · C=' + match.C + 'kN · C₀=' + match.C0 + 'kN</p>' +
+        '</div>' +
+        '<a href="/' + match.model.toLowerCase() + '-bearing/" class="ml-auto text-sm accent-bg px-3 py-1.5 rounded-lg font-semibold hover:opacity-90 transition-colors whitespace-nowrap" style="color:#07090c;">View Specs →</a>' +
+        '</div>';
+    }
+    out.classList.remove('hidden');
+  }
+
+  btn.addEventListener('click', doSearch);
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+})();
+</script>

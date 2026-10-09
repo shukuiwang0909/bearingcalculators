@@ -1,0 +1,276 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BEARINGS } from '../../data/bearing-models';
+import { CHINESE_FACTORIES } from '../../data/chinese-equivalents';
+
+const title = 'Bearing Interchange — SKF NSK FAG NTN KOYO Timken | BearingCalculators';
+const description = 'Free bearing cross-reference tool. Enter any SKF, NSK, FAG, NTN, KOYO, NACHI, or Timken model number to find equivalents and Chinese alternatives (C&U, ZWZ, LYC).';
+
+// Build full interchange table for client-side search
+const interchangeData = BEARINGS.map(b => ({
+  iso: b.model,
+  bore: b.dimensions.bore,
+  od: b.dimensions.od,
+  width: b.dimensions.width,
+  C: b.loadRatings.dynamicC,
+  C0: b.loadRatings.staticC0,
+  brands: b.interchange,
+  chinese: b.chinese.equivalents.map(c => c.factory + ' ' + c.model),
+  oldGB: b.chinese.oldGB,
+  notes: b.chinese.notes,
+}));
+---
+<Base title={title} description={description} breadcrumbItems={[{ name: 'Interchange', url: '/bearing-interchange/' }]}>
+
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Bearing Interchange</h1>
+      <p class="text-theme-secondary">Cross-reference SKF, NSK, FAG, NTN, KOYO, NACHI, and Timken bearings — and find Chinese equivalent alternatives.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+      <!-- Search form -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Search</h2>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="brand-select">Brand</label>
+              <select id="brand-select" class="field w-full rounded-lg px-3 py-2 text-sm">
+                <option value="any">Any brand / ISO number</option>
+                <option value="skf">SKF</option>
+                <option value="fag">FAG (Schaeffler)</option>
+                <option value="nsk">NSK</option>
+                <option value="ntn">NTN</option>
+                <option value="koyo">KOYO (JTEKT)</option>
+                <option value="nachi">NACHI</option>
+                <option value="timken">Timken</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-theme-secondary mb-1" for="model-input">Model number</label>
+              <input id="model-input" type="text" placeholder="e.g. 6205, 6205-2RS, 6305"
+                class="field w-full rounded-lg px-3 py-2 text-sm" autocomplete="off" autocapitalize="off" />
+            </div>
+            <button id="search-btn" class="w-full accent-bg hover:opacity-90 text-sm font-semibold py-2.5 rounded-lg transition-colors" style="color:#07090c;">
+              Find Equivalents
+            </button>
+          </div>
+        </div>
+
+        <!-- Common searches -->
+        <div class="card">
+          <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-3">Common searches</p>
+          <div class="flex flex-wrap gap-2">
+            {['6205','6204','6203','6305','6206','6308','6004'].map(m => (
+              <button class="quick-search text-xs px-2.5 py-1 rounded-md border border-theme hover:border-orange-400 hover:accent-text transition-colors text-theme-secondary" data-model={m}>{m}</button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Suffix guide -->
+        <div class="card">
+          <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-3">Seal Suffix Guide</p>
+          <div class="space-y-1.5 text-xs text-theme-secondary">
+            <div class="grid grid-cols-2 gap-x-4">
+              <span class="font-medium text-theme-primary">SKF</span><span>NSK / NTN</span>
+              <span class="font-mono">6205 2RS1</span><span class="font-mono">6205 2RS</span>
+              <span class="font-mono">6205 Z</span><span class="font-mono">6205 ZZ</span>
+              <span class="font-mono">6205 C3</span><span class="font-mono">6205 C3 (same)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="lg:col-span-3">
+        <div id="result-panel" class="hidden space-y-4">
+          <div class="card">
+            <div id="result-header" class="mb-4"></div>
+            <div id="brand-table"></div>
+          </div>
+          <div id="chinese-panel" class="card hidden">
+            <h3 class="font-semibold text-theme-primary mb-3">Chinese Manufacturer Equivalents</h3>
+            <div id="chinese-table"></div>
+            <div class="mt-4 p-3 rounded-lg accent-light-bg border border-orange-400/20 text-sm">
+              <p class="text-theme-secondary">All Chinese equivalents listed are dimensionally interchangeable with ISO standard per <strong class="text-theme-primary">ISO 15:2017</strong>. Precision grade P0 is standard; P6/P5 available on request.</p>
+              <a href="/request-a-quote/" class="inline-block mt-2 accent-text font-medium hover:underline">Request a quote from Chinese suppliers →</a>
+            </div>
+          </div>
+          <div id="spec-panel" class="card hidden">
+            <h3 class="font-semibold text-theme-primary mb-3">Bearing Specifications</h3>
+            <div id="spec-table"></div>
+          </div>
+        </div>
+
+        <div id="empty-state" class="result-panel rounded-xl p-8 flex flex-col items-center justify-center min-h-52 text-center">
+          <svg class="w-10 h-10 text-theme-muted mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <p class="text-theme-secondary text-sm">Enter a bearing model number above and click Find Equivalents.</p>
+          <p class="text-theme-muted text-xs mt-1">Suffixes like 2RS, ZZ, C3 are stripped automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer rounded-lg p-4 mt-8 text-sm max-w-3xl">
+      <strong>Note:</strong> For standard 6200/6300/6000 series deep groove ball bearings, all major brands (SKF, FAG, NSK, NTN, KOYO, NACHI, Timken) use the same ISO model number. This table covers MVP models; always confirm with the manufacturer for special designs or modified suffixes.
+    </div>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ interchangeData }}>
+(function () {
+  const BEARINGS = interchangeData;
+  const brandSel  = document.getElementById('brand-select');
+  const modelInp  = document.getElementById('model-input');
+  const searchBtn = document.getElementById('search-btn');
+  const panel     = document.getElementById('result-panel');
+  const empty     = document.getElementById('empty-state');
+
+  document.querySelectorAll('.quick-search').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      modelInp.value = btn.dataset.model;
+      brandSel.value = 'any';
+      doSearch();
+    });
+  });
+
+  searchBtn.addEventListener('click', doSearch);
+  modelInp.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+
+  function stripSuffix(m) {
+    return m.toUpperCase()
+      .replace(/[-\s]/g, '')
+      .replace(/2RS\d*/g, '')
+      .replace(/ZZ?/g, '')
+      .replace(/C3|C4|N|NR|M|MA|MB|MC|CC|E$/g, '')
+      .trim();
+  }
+
+  function doSearch() {
+    const raw     = modelInp.value.trim();
+    if (!raw) return;
+    const cleaned = stripSuffix(raw);
+
+    const match = BEARINGS.find(function (b) {
+      return b.iso === cleaned || Object.values(b.brands).some(function (v) {
+        return stripSuffix(v) === cleaned;
+      }) || b.oldGB.includes(cleaned);
+    });
+
+    if (!match) {
+      showNotFound(raw);
+      return;
+    }
+
+    showResult(match, raw);
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'interchange_search', { model: cleaned });
+    }
+  }
+
+  function showNotFound(raw) {
+    document.getElementById('result-header').innerHTML =
+      '<div class="text-sm text-theme-secondary">No match found for <span class="font-mono accent-text">' + raw + '</span>. ' +
+      'This tool covers 6200/6300/6000 series. Try removing suffixes like 2RS, ZZ, C3.</div>';
+    document.getElementById('brand-table').innerHTML = '';
+    document.getElementById('chinese-panel').classList.add('hidden');
+    document.getElementById('spec-panel').classList.add('hidden');
+    panel.classList.remove('hidden');
+    empty.classList.add('hidden');
+  }
+
+  function showResult(b, rawInput) {
+    document.getElementById('result-header').innerHTML =
+      '<div class="flex items-center gap-3 flex-wrap">' +
+      '<span class="text-2xl font-bold text-theme-primary font-mono">' + b.iso + '</span>' +
+      '<span class="text-sm text-theme-secondary">' + b.bore + '×' + b.od + '×' + b.width + 'mm</span>' +
+      (rawInput.toUpperCase().replace(/[-\s]/g,'') !== b.iso ? '<span class="text-xs text-theme-muted">(searched: ' + rawInput + ')</span>' : '') +
+      '</div>' +
+      '<p class="text-sm text-theme-secondary mt-1">All brands below are dimensionally interchangeable.</p>';
+
+    const brands = [
+      ['SKF', b.brands.skf], ['FAG', b.brands.fag], ['NSK', b.brands.nsk],
+      ['NTN', b.brands.ntn], ['KOYO', b.brands.koyo], ['NACHI', b.brands.nachi],
+      ['Timken', b.brands.timken],
+    ].filter(function(r) { return r[1]; });
+
+    document.getElementById('brand-table').innerHTML =
+      '<table class="w-full text-sm">' +
+      '<thead><tr>' +
+      '<th class="text-left py-2 pr-4 text-theme-muted font-medium border-b border-theme">Brand</th>' +
+      '<th class="text-left py-2 pr-4 text-theme-muted font-medium border-b border-theme">Open</th>' +
+      '<th class="text-left py-2 pr-4 text-theme-muted font-medium border-b border-theme">2RS sealed</th>' +
+      '<th class="text-left py-2 text-theme-muted font-medium border-b border-theme">ZZ shielded</th>' +
+      '</tr></thead><tbody>' +
+      brands.map(function(r) {
+        const m = r[1];
+        const suffixes = getSuffixes(r[0]);
+        return '<tr class="border-b border-theme">' +
+          '<td class="py-2 pr-4 font-semibold text-theme-primary">' + r[0] + '</td>' +
+          '<td class="py-2 pr-4 font-mono text-sm text-theme-secondary">' + m + '</td>' +
+          '<td class="py-2 pr-4 font-mono text-sm text-theme-secondary">' + m + ' ' + suffixes.twoRS + '</td>' +
+          '<td class="py-2 font-mono text-sm text-theme-secondary">' + m + ' ' + suffixes.zz + '</td>' +
+          '</tr>';
+      }).join('') +
+      '</tbody></table>';
+
+    const cnPanel = document.getElementById('chinese-panel');
+    document.getElementById('chinese-table').innerHTML =
+      '<table class="w-full text-sm">' +
+      '<thead><tr>' +
+      '<th class="text-left py-2 pr-4 text-theme-muted font-medium border-b border-theme">Manufacturer</th>' +
+      '<th class="text-left py-2 pr-4 text-theme-muted font-medium border-b border-theme">Model</th>' +
+      '<th class="text-left py-2 text-theme-muted font-medium border-b border-theme">Grade / Tier</th>' +
+      '</tr></thead><tbody>' +
+      b.chinese.map(function(cn) {
+        var parts = cn.split(' ');
+        var factory = parts[0];
+        var model = parts.slice(1).join(' ');
+        return '<tr class="border-b border-theme">' +
+          '<td class="py-2 pr-4 font-semibold text-theme-primary">' + factory + '</td>' +
+          '<td class="py-2 pr-4 font-mono text-sm text-theme-secondary">' + model + '</td>' +
+          '<td class="py-2 text-sm text-theme-secondary">P0 standard</td>' +
+          '</tr>';
+      }).join('') +
+      '</tbody></table>' +
+      (b.oldGB.length ? '<p class="text-xs text-theme-muted mt-3">Old Chinese GB: ' + b.oldGB.join(', ') + '</p>' : '');
+    cnPanel.classList.remove('hidden');
+
+    const specPanel = document.getElementById('spec-panel');
+    document.getElementById('spec-table').innerHTML =
+      '<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">' +
+      [
+        ['Bore', b.bore + ' mm'], ['OD', b.od + ' mm'], ['Width', b.width + ' mm'],
+        ['C (dynamic)', b.C + ' kN'], ['C₀ (static)', b.C0 + ' kN'],
+      ].map(function(pair) {
+        return '<div class="bg-theme-tertiary rounded-lg p-3">' +
+          '<p class="text-xs text-theme-muted">' + pair[0] + '</p>' +
+          '<p class="font-semibold text-theme-primary mt-0.5">' + pair[1] + '</p>' +
+          '</div>';
+      }).join('') +
+      '</div>' +
+      '<a href="/' + b.iso.toLowerCase() + '-bearing/" class="inline-block mt-3 text-sm accent-text hover:underline">' +
+      'Full ' + b.iso + ' datasheet →</a>';
+    specPanel.classList.remove('hidden');
+
+    panel.classList.remove('hidden');
+    empty.classList.add('hidden');
+  }
+
+  function getSuffixes(brand) {
+    var s = {
+      skf:   { twoRS: '2RS1', zz: 'Z'    },
+      fag:   { twoRS: '2RS',  zz: 'Z'    },
+      nsk:   { twoRS: '2RS',  zz: 'ZZ'   },
+      ntn:   { twoRS: '2RS',  zz: 'ZZ'   },
+      koyo:  { twoRS: '2RS',  zz: 'ZZ'   },
+      nachi: { twoRS: '2NSE9', zz: 'ZZE' },
+      timken:{ twoRS: '2RS',  zz: 'ZZ'   },
+    };
+    return s[brand.toLowerCase()] || { twoRS: '2RS', zz: 'ZZ' };
+  }
+})();
+</script>

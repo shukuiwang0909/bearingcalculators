@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CHINESE_MODEL_BY_MODEL } from '../../data/chinese-equivalents';
+
+const price = CHINESE_MODEL_BY_MODEL['6205'];
+const title = 'Timken 6205 Equivalent — Chinese Alternatives & Interchange | BearingCalculators';
+const description = 'Timken 6205 equivalent bearings and Chinese alternatives. 25×52×15mm, C=14kN. C&U, ZWZ, LYC alternatives at 30–60% lower cost. ISO 15:2017 interchangeable.';
+---
+<Base title={title} description={description} breadcrumbItems={[
+  { name: 'Interchange', url: '/bearing-interchange/' },
+  { name: 'Timken 6205 Equivalent', url: '/timken-6205-equivalent/' },
+]}>
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">Timken → Chinese Alternative</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Timken 6205 Equivalent Bearings</h1>
+      <p class="text-theme-secondary">The <strong>Timken 6205</strong> is a 25×52×15mm deep groove ball bearing conforming to ISO 15:2017. Timken uses the same model numbering as ISO for this series. Chinese equivalents offer significant cost savings for non-critical applications.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">Timken 6205 Specifications</h2>
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            {[['Bore','25 mm'],['OD','52 mm'],['Width','15 mm'],['C','14.0 kN'],['C₀','7.85 kN'],['Standard','ISO 15:2017']].map(([l,v]) => (
+              <div class="bg-theme-tertiary rounded-lg p-3">
+                <p class="text-xs text-theme-muted">{l}</p>
+                <p class="font-semibold text-theme-primary font-mono text-sm">{v}</p>
+              </div>
+            ))}
+          </div>
+          <p class="text-sm text-theme-secondary">Timken models: <span class="font-mono">6205</span> (open), <span class="font-mono">6205 2RS</span> (sealed), <span class="font-mono">6205 ZZ</span> (shielded).</p>
+        </div>
+
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-3">Chinese Equivalent Bearings</h2>
+          {price && <p class="text-sm text-theme-secondary mb-4">Chinese FOB: <strong class="text-theme-primary">${price.priceRangeUSD.min}–${price.priceRangeUSD.max} USD/pc</strong> vs. Timken approximately $3.50–5.50 USD/pc. Cost saving: 40–70%.</p>}
+          <table class="w-full text-sm mb-4">
+            <thead><tr class="border-b border-theme">
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Manufacturer</th>
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Model</th>
+              <th class="text-left py-2 text-theme-muted font-medium">Best For</th>
+            </tr></thead>
+            <tbody>
+              {[
+                ['C&U','6205','High-volume, light-duty applications'],
+                ['ZWZ','6205','Closer tolerance, critical applications'],
+                ['LYC','6205','General industrial use'],
+                ['HRB','6205','Price-sensitive bulk procurement'],
+              ].map(([f,m,n]) => (
+                <tr class="border-b border-theme">
+                  <td class="py-2 pr-4 font-semibold text-theme-primary">{f}</td>
+                  <td class="py-2 pr-4 font-mono text-theme-secondary">{m}</td>
+                  <td class="py-2 text-xs text-theme-muted">{n}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <a href="/request-a-quote/" class="inline-block accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Get Pricing from Chinese Factories</a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">6205 Resources</h3>
+          <ul class="text-sm space-y-2">
+            <li><a href="/6205-bearing/" class="accent-text hover:underline">6205 Full Datasheet →</a></li>
+            <li><a href="/skf-6205-equivalent/" class="text-theme-secondary hover:accent-text">SKF 6205 Equivalent →</a></li>
+            <li><a href="/nsk-6205-equivalent/" class="text-theme-secondary hover:accent-text">NSK 6205 Equivalent →</a></li>
+            <li><a href="/bearing-interchange/" class="text-theme-secondary hover:accent-text">Bearing Interchange Tool →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">When to Choose Chinese</h3>
+          <ul class="text-sm text-theme-secondary space-y-1 list-disc list-inside">
+            <li>Non-critical, replaceable components</li>
+            <li>High-volume procurement (500+ pcs)</li>
+            <li>P0 precision is sufficient</li>
+            <li>Budget-constrained projects</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

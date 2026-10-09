@@ -1,0 +1,218 @@
+@import "tailwindcss";
+@import "@fontsource/inter/300.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-ink-950: #07090c;
+  --color-ink-900: #0c0f14;
+  --color-ink-850: #11151c;
+  --color-ink-800: #171c26;
+  --color-ink-700: #232a38;
+  --color-ink-600: #323b4d;
+  --color-ink-500: #4a5568;
+  --color-ink-400: #6b7686;
+  --color-ink-300: #94a0b3;
+  --color-ink-200: #c3cbd8;
+  --color-ink-100: #dde3ec;
+  --color-ink-50:  #f2f5f9;
+
+  --color-orange-400: #fb923c;
+  --color-orange-500: #f97316;
+  --color-orange-600: #ea6c0a;
+
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* CSS Variables for theming */
+:root {
+  --bg-primary:    #f8fafc;
+  --bg-secondary:  #ffffff;
+  --bg-tertiary:   #f1f5f9;
+  --bg-card:       #ffffff;
+  --text-primary:  #0f172a;
+  --text-secondary:#475569;
+  --text-muted:    #94a3b8;
+  --border-color:  #e2e8f0;
+  --accent:        #f97316;
+  --accent-hover:  #ea6c0a;
+  --accent-light:  rgba(249, 115, 22, 0.1);
+  --blue:          #1e40af;
+  color-scheme: light;
+}
+
+.dark {
+  --bg-primary:    #07090c;
+  --bg-secondary:  #0c0f14;
+  --bg-tertiary:   #11151c;
+  --bg-card:       #171c26;
+  --text-primary:  #f2f5f9;
+  --text-secondary:#c3cbd8;
+  --text-muted:    #6b7686;
+  --border-color:  #232a38;
+  --accent:        #fb923c;
+  --accent-hover:  #f97316;
+  --accent-light:  rgba(249, 115, 22, 0.1);
+  --blue:          #60a5fa;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  @apply antialiased;
+  font-feature-settings: "cv01", "ss03";
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(249, 115, 22, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(30, 64, 175, 0.03) 0%, transparent 50%);
+}
+
+.dark body::before {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(251, 146, 60, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(96, 165, 250, 0.03) 0%, transparent 50%);
+}
+
+.tech-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(30, 64, 175, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 64, 175, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+.dark .tech-grid {
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.02) 1px, transparent 1px);
+}
+
+.prose table { @apply w-full text-sm border-collapse; }
+.prose th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  @apply text-left px-3 py-2 border font-semibold;
+  border-color: var(--border-color);
+}
+.prose td {
+  color: var(--text-secondary);
+  @apply px-3 py-2 border;
+  border-color: var(--border-color);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  @apply rounded-xl p-6;
+  transition: all 0.3s;
+}
+.card:hover {
+  border-color: var(--text-muted);
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.06);
+  transform: translateY(-2px);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.dark .glass {
+  background: rgba(17, 21, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-accent::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.3), transparent);
+}
+
+/* Utility classes */
+.bg-theme-primary   { background-color: var(--bg-primary); }
+.bg-theme-secondary { background-color: var(--bg-secondary); }
+.bg-theme-tertiary  { background-color: var(--bg-tertiary); }
+.bg-theme-card      { background-color: var(--bg-card); }
+.text-theme-primary   { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-muted     { color: var(--text-muted); }
+.border-theme   { border-color: var(--border-color); }
+.accent-text    { color: var(--accent); }
+.accent-bg      { background-color: var(--accent); }
+.accent-border  { border-color: var(--accent); }
+.accent-light-bg { background-color: var(--accent-light); }
+.hover-accent-light:hover { background-color: var(--accent-light); }
+.blue-text { color: var(--blue); }
+.divide-theme > :not([hidden]) ~ :not([hidden]) { border-color: var(--border-color); }
+
+.accent-radio { accent-color: var(--accent); }
+
+.field {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.field:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.field:disabled {
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.result-panel {
+  background: linear-gradient(180deg, var(--bg-tertiary), var(--bg-secondary));
+  border: 1px solid var(--border-color);
+}
+.mono-block {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.disclaimer {
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  background: var(--accent-light);
+  color: var(--text-secondary);
+}
+.dark .disclaimer { color: #fdba74; }
+
+/* Bearing-specific badge colors */
+.badge-in-stock  { background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-limited   { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge-mto       { background: rgba(100, 116, 139, 0.12); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }

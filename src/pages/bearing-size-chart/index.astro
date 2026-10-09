@@ -1,0 +1,194 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BEARINGS, getBySeries } from '../../data/bearing-models';
+
+const title = 'Bearing Size Chart — 6200 6300 6000 Series Dimensions | BearingCalculators';
+const description = 'Complete bearing size chart: bore, OD, width, dynamic load C, static load C0 for all 6200, 6300, and 6000 series deep groove ball bearings. Searchable and filterable.';
+
+const series = ['6200', '6300', '6000'];
+const s6200 = getBySeries('6200');
+const s6300 = getBySeries('6300');
+const s6000 = getBySeries('6000');
+
+const tableData = BEARINGS.map(b => ({
+  model: b.model,
+  series: b.series,
+  bore: b.dimensions.bore,
+  od: b.dimensions.od,
+  width: b.dimensions.width,
+  fillet: b.dimensions.fillet,
+  C: b.loadRatings.dynamicC,
+  C0: b.loadRatings.staticC0,
+  Pu: b.loadRatings.fatigueLimitPu,
+  grease: b.speedLimits.grease,
+  oil: b.speedLimits.oil,
+  weight: b.weight,
+}));
+---
+<Base title={title} description={description} breadcrumbItems={[{ name: 'Size Chart', url: '/bearing-size-chart/' }]}>
+
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Bearing Size Chart</h1>
+      <p class="text-theme-secondary">ISO 15:2017 dimensions for 6200, 6300, and 6000 series deep groove ball bearings. Use the search and filter to find your bearing.</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-wrap gap-3 mb-6 items-center">
+      <input id="search-input" type="text" placeholder="Search model, bore, OD..."
+        class="field rounded-lg px-3 py-2 text-sm w-48" autocomplete="off" />
+
+      <div class="flex gap-2">
+        <button class="series-btn active text-sm px-3 py-1.5 rounded-lg border border-theme transition-colors" data-series="all">All</button>
+        {series.map(s => (
+          <button class="series-btn text-sm px-3 py-1.5 rounded-lg border border-theme transition-colors hover:border-orange-400 text-theme-secondary" data-series={s}>{s}</button>
+        ))}
+      </div>
+
+      <!-- Reverse lookup -->
+      <div class="flex items-center gap-2 ml-auto">
+        <span class="text-xs text-theme-muted">Reverse lookup:</span>
+        <input id="rev-bore" type="number" placeholder="Bore" class="field rounded-lg px-2 py-1.5 text-sm w-16" />
+        <span class="text-theme-muted">×</span>
+        <input id="rev-od" type="number" placeholder="OD" class="field rounded-lg px-2 py-1.5 text-sm w-16" />
+        <span class="text-theme-muted">×</span>
+        <input id="rev-width" type="number" placeholder="W" class="field rounded-lg px-2 py-1.5 text-sm w-16" />
+        <button id="rev-btn" class="text-sm px-3 py-1.5 rounded-lg accent-bg font-medium transition-colors" style="color:#07090c;">Find</button>
+      </div>
+    </div>
+
+    <!-- Reverse result -->
+    <div id="rev-result" class="hidden mb-4 p-3 rounded-lg accent-light-bg border border-orange-400/30 text-sm text-theme-secondary"></div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm" id="size-table">
+        <thead>
+          <tr class="border-b-2 border-theme">
+            <th class="text-left px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">Model</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">Bore (mm)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">OD (mm)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">Width (mm)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">Fillet (mm)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">C (kN)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">C₀ (kN)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">n grease (rpm)</th>
+            <th class="text-right px-3 py-3 font-semibold text-theme-primary whitespace-nowrap">Weight (kg)</th>
+            <th class="px-3 py-3"></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          {tableData.map((b, i) => (
+            <tr class="bearing-row border-b border-theme hover:bg-theme-tertiary transition-colors"
+              data-model={b.model} data-series={b.series}
+              data-bore={b.bore} data-od={b.od} data-width={b.width}>
+              <td class="px-3 py-2.5">
+                <a href={`/${b.model.toLowerCase()}-bearing/`} class="font-mono font-semibold accent-text hover:underline">{b.model}</a>
+              </td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.bore}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.od}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.width}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.fillet}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.C}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.C0}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.grease.toLocaleString()}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-theme-secondary">{b.weight}</td>
+              <td class="px-3 py-2.5 text-right">
+                <a href={`/${b.model.toLowerCase()}-bearing/`} class="text-xs text-theme-muted hover:accent-text transition-colors">Details →</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p id="no-results" class="hidden text-center text-theme-muted py-8 text-sm">No bearings match your filter.</p>
+
+    <div class="mt-8 grid md:grid-cols-3 gap-4">
+      {[
+        { series: '6200', desc: '7 models, bore 10–30mm. Most common small-motor series.', count: s6200.length },
+        { series: '6300', desc: '5 models listed, bore 20–45mm. Heavier cross-section, higher load capacity.', count: s6300.length },
+        { series: '6000', desc: '3 models, bore 20–30mm. Extra-thin section for compact drives.', count: s6000.length },
+      ].map(({ series, desc, count }) => (
+        <div class="card">
+          <p class="text-lg font-bold accent-text">{series} Series</p>
+          <p class="text-xs text-theme-muted mt-0.5">{count} models</p>
+          <p class="text-sm text-theme-secondary mt-2">{desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="disclaimer rounded-lg p-4 mt-6 text-sm">
+      <strong>Source:</strong> ISO 15:2017 and SKF General Catalogue. Load ratings (C, C₀) and speed limits are for reference. Always verify against the bearing manufacturer's current datasheet before design finalization.
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+(function () {
+  var rows     = document.querySelectorAll('.bearing-row');
+  var searchIn = document.getElementById('search-input');
+  var seriesBtns = document.querySelectorAll('.series-btn');
+  var noResults = document.getElementById('no-results');
+  var activeSeries = 'all';
+
+  function filterTable() {
+    var q = searchIn.value.toLowerCase().trim();
+    var shown = 0;
+    rows.forEach(function (row) {
+      var model  = row.dataset.model.toLowerCase();
+      var series = row.dataset.series;
+      var bore   = row.dataset.bore;
+      var od     = row.dataset.od;
+      var width  = row.dataset.width;
+      var matchQ = !q || model.includes(q) || bore.includes(q) || od.includes(q) || width.includes(q);
+      var matchS = activeSeries === 'all' || series === activeSeries;
+      var show   = matchQ && matchS;
+      row.classList.toggle('hidden', !show);
+      if (show) shown++;
+    });
+    noResults.classList.toggle('hidden', shown > 0);
+  }
+
+  searchIn.addEventListener('input', filterTable);
+
+  seriesBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activeSeries = btn.dataset.series;
+      seriesBtns.forEach(function (b) {
+        b.classList.toggle('active', b === btn);
+        b.classList.toggle('accent-text', b === btn);
+        b.classList.toggle('border-orange-400', b === btn);
+        b.classList.toggle('text-theme-secondary', b !== btn);
+      });
+      filterTable();
+    });
+  });
+
+  // Reverse lookup
+  document.getElementById('rev-btn').addEventListener('click', function () {
+    var bore  = parseFloat(document.getElementById('rev-bore').value);
+    var od    = parseFloat(document.getElementById('rev-od').value);
+    var width = parseFloat(document.getElementById('rev-width').value);
+    var div   = document.getElementById('rev-result');
+    if (!bore && !od && !width) { div.classList.add('hidden'); return; }
+
+    var matches = [];
+    rows.forEach(function (row) {
+      var bMatch = !bore  || parseFloat(row.dataset.bore)  === bore;
+      var oMatch = !od    || parseFloat(row.dataset.od)    === od;
+      var wMatch = !width || parseFloat(row.dataset.width) === width;
+      if (bMatch && oMatch && wMatch) matches.push(row.dataset.model);
+    });
+
+    if (matches.length === 0) {
+      div.innerHTML = 'No match for ' + [bore||'?','×',od||'?','×',width||'?'].join('') + 'mm.';
+    } else {
+      div.innerHTML = 'Match found: ' + matches.map(function(m) {
+        return '<a href="/' + m.toLowerCase() + '-bearing/" class="font-mono font-semibold accent-text hover:underline">' + m + '</a>';
+      }).join(', ');
+    }
+    div.classList.remove('hidden');
+  });
+})();
+</script>

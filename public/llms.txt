@@ -1,0 +1,55 @@
+# Bearing Calculators
+
+> Free ISO 281 bearing calculators for procurement engineers and maintenance teams — dimensions, life calculations, brand interchange, and Chinese supplier quotes.
+
+Bearing Calculators provides accurate, browser-based tools for bearing selection, life calculation, brand cross-reference, and fit analysis. Dimensional data is sourced from ISO 15:2017, manufacturer catalogs (SKF, FAG, NSK, NTN, KOYO, Timken), and verified against multiple sources.
+
+## Calculators
+
+- [Bearing Life Calculator](https://bearingcalculators.com/bearing-life-calculator/): ISO 281 L10 bearing life — input dynamic load rating C, equivalent load P, and RPM to get L10 hours. Ball and roller bearings.
+- [Bearing Interchange](https://bearingcalculators.com/bearing-interchange/): Cross-reference SKF, FAG, NSK, NTN, KOYO, NACHI, Timken model numbers. Find exact equivalents and Chinese (C&U, LYC, HRB, ZWZ) alternatives.
+- [Bearing Fit Calculator](https://bearingcalculators.com/bearing-calculator/): ISO 286 shaft and housing fit analysis — clearance, transition, or interference fit with color-coded output.
+- [Bearing Size Lookup](https://bearingcalculators.com/bearing-size-chart/): Look up bore, OD, width, and load ratings by model number, or reverse-search by dimensions.
+
+## Bearing Model Pages (Dimensions & Specifications)
+
+- [6205 Bearing](https://bearingcalculators.com/6205-bearing/): 25×52×15mm, C=14.0kN, SKF/NSK/Timken equivalents
+- [6204 Bearing](https://bearingcalculators.com/6204-bearing/): 20×47×14mm
+- [6203 Bearing](https://bearingcalculators.com/6203-bearing/): 17×40×12mm
+- [6206 Bearing](https://bearingcalculators.com/6206-bearing/): 30×62×16mm
+- [6202 Bearing](https://bearingcalculators.com/6202-bearing/): 15×35×11mm
+- [6201 Bearing](https://bearingcalculators.com/6201-bearing/): 12×32×10mm
+- [6200 Bearing](https://bearingcalculators.com/6200-bearing/): 10×30×9mm
+- [6305 Bearing](https://bearingcalculators.com/6305-bearing/): 25×62×17mm
+- [6308 Bearing](https://bearingcalculators.com/6308-bearing/): 40×90×23mm
+- [6306 Bearing](https://bearingcalculators.com/6306-bearing/): 30×72×19mm
+- [6304 Bearing](https://bearingcalculators.com/6304-bearing/): 20×52×15mm
+- [6309 Bearing](https://bearingcalculators.com/6309-bearing/): 45×100×25mm
+- [6004 Bearing](https://bearingcalculators.com/6004-bearing/): 20×42×12mm
+- [6005 Bearing](https://bearingcalculators.com/6005-bearing/): 25×47×12mm
+- [6006 Bearing](https://bearingcalculators.com/6006-bearing/): 30×55×13mm
+
+## Brand Interchange Pages
+
+- [SKF 6205 Equivalent](https://bearingcalculators.com/skf-6205-equivalent/)
+- [SKF 6203 Equivalent](https://bearingcalculators.com/skf-6203-equivalent/)
+- [NSK 6205 Equivalent](https://bearingcalculators.com/nsk-6205-equivalent/)
+- [Timken 6205 Equivalent](https://bearingcalculators.com/timken-6205-equivalent/)
+
+## Reference
+
+- [Bearing Size Chart](https://bearingcalculators.com/bearing-size-chart/): All 6200/6300/6000 series dimensions — bore, OD, width, C, C0.
+- [Request a Quote](https://bearingcalculators.com/request-a-quote/): Get pricing from Chinese bearing manufacturers (C&U, LYC, HRB, ZWZ). FOB/CIF pricing available.
+
+## Key Technical Facts
+
+- Life calculation standard: ISO 281 (L10 basic rating life)
+- Dimension standard: ISO 15:2017 (metric ball bearings)
+- Supported series: 6200, 6300, 6000 deep groove ball bearings (MVP)
+- Interchange coverage: SKF, FAG, NSK, NTN, KOYO, NACHI, Timken
+- Chinese alternatives: C&U, LYC (Luoyang), HRB (Harbin), ZWZ (Zhejiang)
+- Free to use, no registration required
+
+## Sitemap
+
+Full sitemap: https://bearingcalculators.com/sitemap-index.xml

@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BEARING_BY_MODEL } from '../../data/bearing-models';
+import { CHINESE_MODEL_BY_MODEL } from '../../data/chinese-equivalents';
+
+const b = BEARING_BY_MODEL['6203'];
+const price = CHINESE_MODEL_BY_MODEL['6203'];
+const title = 'SKF 6203 Equivalent — Chinese Alternatives & Interchange | BearingCalculators';
+const description = 'SKF 6203 equivalent bearings: C&U, ZWZ, LYC Chinese alternatives. 17×40×12mm. C=9.55kN. NSK 6203, FAG 6203, NTN 6203 also interchangeable. Get quotes.';
+---
+<Base title={title} description={description} breadcrumbItems={[
+  { name: 'Interchange', url: '/bearing-interchange/' },
+  { name: 'SKF 6203 Equivalent', url: '/skf-6203-equivalent/' },
+]}>
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">SKF → Chinese Alternative</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">SKF 6203 Equivalent Bearings</h1>
+      <p class="text-theme-secondary">The <strong>SKF 6203</strong> is a 17×40×12mm deep groove ball bearing (ISO 15:2017), C=9.55kN. Common in small motors and pumps. All Chinese equivalents are dimensionally interchangeable.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">SKF 6203 Specifications</h2>
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            {[['Bore','17 mm'],['OD','40 mm'],['Width','12 mm'],['C','9.55 kN'],['C₀','4.78 kN'],['Speed (grease)','17,000 rpm']].map(([l,v]) => (
+              <div class="bg-theme-tertiary rounded-lg p-3">
+                <p class="text-xs text-theme-muted">{l}</p>
+                <p class="font-semibold text-theme-primary font-mono text-sm">{v}</p>
+              </div>
+            ))}
+          </div>
+          <p class="text-sm text-theme-secondary">SKF models: <span class="font-mono">6203</span>, <span class="font-mono">6203 2RS1</span>, <span class="font-mono">6203 Z</span>.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-3">Chinese Equivalent Bearings</h2>
+          {price && <p class="text-sm text-theme-secondary mb-4">Indicative FOB: <strong class="text-theme-primary">${price.priceRangeUSD.min}–${price.priceRangeUSD.max} USD/pc</strong> (MOQ 100, P0 open).</p>}
+          <table class="w-full text-sm">
+            <thead><tr class="border-b border-theme">
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Manufacturer</th>
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Model</th>
+              <th class="text-left py-2 text-theme-muted font-medium">Notes</th>
+            </tr></thead>
+            <tbody>
+              {[['C&U','6203','Budget — widely available'],['ZWZ','6203','Mid-range precision'],['LYC','6203','Reliable for industrial use'],['HRB','6203','Budget, high-volume']].map(([f,m,n]) => (
+                <tr class="border-b border-theme">
+                  <td class="py-2 pr-4 font-semibold text-theme-primary">{f}</td>
+                  <td class="py-2 pr-4 font-mono text-theme-secondary">{m}</td>
+                  <td class="py-2 text-xs text-theme-muted">{n}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <a href="/request-a-quote/" class="inline-block mt-4 accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Request Quote</a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">More Resources</h3>
+          <ul class="text-sm space-y-2">
+            <li><a href="/6203-bearing/" class="accent-text hover:underline">6203 Full Specifications →</a></li>
+            <li><a href="/skf-6205-equivalent/" class="text-theme-secondary hover:accent-text">SKF 6205 Equivalent →</a></li>
+            <li><a href="/bearing-interchange/" class="text-theme-secondary hover:accent-text">Interchange Tool →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">Related Models</h3>
+          <ul class="text-sm space-y-2">
+            {[['6202-bearing','6202 — 15×35×11mm'],['6204-bearing','6204 — 20×47×14mm'],['6303-bearing','6303 — heavier load']].map(([href,label]) => (
+              <li><a href={`/${href}/`} class="text-theme-secondary hover:accent-text transition-colors">{label} →</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

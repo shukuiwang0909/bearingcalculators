@@ -1,0 +1,20 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+<Base title="Quote Request Received | BearingCalculators" description="We received your bearing inquiry." robots="noindex,nofollow">
+  <section class="max-w-xl mx-auto px-4 py-20 text-center">
+    <div class="w-16 h-16 rounded-full accent-bg flex items-center justify-center mx-auto mb-6" style="color:#07090c;">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+    <h1 class="text-3xl font-bold text-theme-primary mb-3">Inquiry Received</h1>
+    <p class="text-theme-secondary mb-8">Thank you. We'll forward your inquiry to verified Chinese bearing manufacturers and follow up within 24 hours with FOB pricing and availability.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/bearing-size-chart/" class="border border-theme text-theme-secondary hover:text-theme-primary hover:border-orange-400 text-sm px-4 py-2 rounded-lg transition-colors">Bearing Size Chart</a>
+      <a href="/bearing-life-calculator/" class="border border-theme text-theme-secondary hover:text-theme-primary hover:border-orange-400 text-sm px-4 py-2 rounded-lg transition-colors">Life Calculator</a>
+      <a href="/bearing-interchange/" class="border border-theme text-theme-secondary hover:text-theme-primary hover:border-orange-400 text-sm px-4 py-2 rounded-lg transition-colors">Interchange Tool</a>
+      <a href="/" class="accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Back to Home</a>
+    </div>
+  </section>
+</Base>

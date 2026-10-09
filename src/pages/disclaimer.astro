@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Disclaimer | BearingCalculators" description="Disclaimer for BearingCalculators.com — limitations of use and accuracy of data.">
+  <section class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold text-theme-primary mb-2">Disclaimer</h1>
+    <p class="text-theme-muted text-sm mb-8">Last updated: October 2026</p>
+    <div class="space-y-6 text-sm text-theme-secondary leading-relaxed">
+      <section>
+        <h2 class="text-base font-semibold text-theme-primary mb-2">Engineering Data Accuracy</h2>
+        <p>Bearing dimensions, load ratings, and speed limits presented on BearingCalculators.com are based on ISO 15:2017, ISO 281, ISO 286-1, and publicly available manufacturer catalogs (SKF, NSK, FAG, NTN, KOYO, Timken). While we strive for accuracy, data may not reflect the most current manufacturer revisions or regional variants.</p>
+        <p class="mt-2"><strong class="text-theme-primary">Always verify critical specifications directly with the bearing manufacturer before design finalization or procurement.</strong></p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-theme-primary mb-2">L10 Life Calculations</h2>
+        <p>Our Bearing Life Calculator computes ISO 281 basic rating life (L10). This does not account for contamination factors, lubrication adequacy, misalignment, or operating temperature — all of which can significantly reduce actual bearing life. The modified rating life (Lnmh) per ISO 281:2007/Amd.2:2012 should be used for critical applications.</p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-theme-primary mb-2">Fit Calculations</h2>
+        <p>ISO 286 tolerance values are based on ISO 286-1:2010. Thermal expansion effects, mounting method, and bearing internal clearance class are not included in the calculator output and must be evaluated separately.</p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-theme-primary mb-2">Chinese Bearing Equivalents</h2>
+        <p>Chinese bearing models listed as equivalents are dimensionally interchangeable with ISO-standard bearings. However, internal geometry, material quality, and precision grade may differ between manufacturers and individual production batches. Request test reports and quality certificates for critical applications.</p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-theme-primary mb-2">No Liability</h2>
+        <p>BearingCalculators.com is provided for informational purposes only. We accept no liability for engineering decisions, procurement actions, or equipment failures based on information obtained from this website. Use of this site constitutes acceptance of these terms.</p>
+      </section>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BEARING_BY_MODEL } from '../../data/bearing-models';
+import { CHINESE_MODEL_BY_MODEL } from '../../data/chinese-equivalents';
+
+const b = BEARING_BY_MODEL['6205'];
+const price = CHINESE_MODEL_BY_MODEL['6205'];
+const title = 'SKF 6205 Equivalent — Chinese Alternatives & Interchange | BearingCalculators';
+const description = 'SKF 6205 equivalent bearings: C&U, ZWZ, LYC, and HRB Chinese alternatives. Dimensions 25×52×15mm, C=14kN. NSK 6205, FAG 6205, Timken 6205 also interchangeable.';
+---
+<Base title={title} description={description} breadcrumbItems={[
+  { name: 'Interchange', url: '/bearing-interchange/' },
+  { name: 'SKF 6205 Equivalent', url: '/skf-6205-equivalent/' },
+]}>
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">SKF → Chinese Alternative</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">SKF 6205 Equivalent Bearings</h1>
+      <p class="text-theme-secondary">The <strong>SKF 6205</strong> is a deep groove ball bearing: bore 25mm, OD 52mm, width 15mm (ISO 15:2017). All Chinese equivalents below are fully dimensionally interchangeable.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Specs -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-4">SKF 6205 Specifications</h2>
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            {[['Bore', '25 mm'],['OD', '52 mm'],['Width', '15 mm'],['C', '14.0 kN'],['C₀', '7.85 kN'],['Speed (grease)', '13,000 rpm']].map(([l,v]) => (
+              <div class="bg-theme-tertiary rounded-lg p-3">
+                <p class="text-xs text-theme-muted">{l}</p>
+                <p class="font-semibold text-theme-primary font-mono text-sm">{v}</p>
+              </div>
+            ))}
+          </div>
+          <p class="text-sm text-theme-secondary">SKF part numbers: <span class="font-mono">6205</span> (open), <span class="font-mono">6205 2RS1</span> (rubber sealed), <span class="font-mono">6205 Z</span> (metal shielded).</p>
+        </div>
+
+        <!-- Chinese equivalents -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-3">Chinese Equivalent Bearings</h2>
+          {price && <p class="text-sm text-theme-secondary mb-4">Indicative FOB price: <strong class="text-theme-primary">${price.priceRangeUSD.min}–${price.priceRangeUSD.max} USD/pc</strong> (MOQ 100 pcs, P0 open). SKF equivalent typically $3–5 USD/pc.</p>}
+          <table class="w-full text-sm">
+            <thead><tr class="border-b border-theme">
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Manufacturer</th>
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Model</th>
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Grade</th>
+              <th class="text-left py-2 text-theme-muted font-medium">Notes</th>
+            </tr></thead>
+            <tbody>
+              {[
+                { factory: 'C&U', model: '6205', grade: 'P0', note: 'Budget — good general-purpose' },
+                { factory: 'ZWZ', model: '6205', grade: 'P0/P6', note: 'Mid-range — close to SKF tolerance' },
+                { factory: 'LYC', model: '6205', grade: 'P0', note: 'Mid-range — reliable quality' },
+                { factory: 'HRB', model: '6205', grade: 'P0', note: 'Budget — high-volume orders' },
+              ].map(r => (
+                <tr class="border-b border-theme">
+                  <td class="py-2 pr-4 font-semibold text-theme-primary">{r.factory}</td>
+                  <td class="py-2 pr-4 font-mono text-theme-secondary">{r.model}</td>
+                  <td class="py-2 pr-4 text-theme-secondary">{r.grade}</td>
+                  <td class="py-2 text-xs text-theme-muted">{r.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <a href="/request-a-quote/" class="inline-block mt-4 accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Request Quote</a>
+        </div>
+
+        <!-- All brand interchange -->
+        <div class="card">
+          <h2 class="text-lg font-semibold text-theme-primary mb-3">All Brand Equivalents</h2>
+          <p class="text-sm text-theme-secondary mb-3">All brands produce the 6205 to ISO 15:2017 — fully interchangeable.</p>
+          <div class="flex flex-wrap gap-2">
+            {['SKF 6205','FAG 6205','NSK 6205','NTN 6205','KOYO 6205','NACHI 6205','Timken 6205'].map(n => (
+              <span class="font-mono text-sm px-3 py-1 rounded-lg bg-theme-tertiary text-theme-secondary border border-theme">{n}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">More 6205 Resources</h3>
+          <ul class="text-sm space-y-2">
+            <li><a href="/6205-bearing/" class="accent-text hover:underline">6205 Full Specifications →</a></li>
+            <li><a href="/nsk-6205-equivalent/" class="text-theme-secondary hover:accent-text transition-colors">NSK 6205 Equivalent →</a></li>
+            <li><a href="/timken-6205-equivalent/" class="text-theme-secondary hover:accent-text transition-colors">Timken 6205 Equivalent →</a></li>
+            <li><a href="/bearing-life-calculator/" class="text-theme-secondary hover:accent-text transition-colors">6205 Life Calculator →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-theme-primary mb-3">Similar Bearings</h3>
+          <ul class="text-sm space-y-2">
+            {[['6204-bearing','6204 — 20×47×14mm'],['6206-bearing','6206 — 30×62×16mm'],['6305-bearing','6305 — 25×62×17mm (heavier)']].map(([href,label]) => (
+              <li><a href={`/${href}/`} class="text-theme-secondary hover:accent-text transition-colors">{label} →</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
