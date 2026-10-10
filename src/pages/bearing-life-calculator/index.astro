@@ -208,6 +208,9 @@ const faqItems = [
   });
 
   function calculate() {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'calculator_used', { tool_name: 'bearing-life-calculator' });
+    }
     const C = parseFloat(cInput.value);
     const P = parseFloat(pInput.value);
     const n = parseFloat(nInput.value);

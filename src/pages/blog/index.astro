@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const title = 'Bearing Knowledge Blog — ISO 281, Brand Guides, Chinese Suppliers | BearingCalculators';
+const description = 'Practical guides for procurement engineers: ISO 281 bearing life calculations, SKF vs NSK brand comparisons, Chinese manufacturer sourcing, and fit selection.';
+
+const posts = [
+  {
+    href: '/blog/chinese-bearing-manufacturers-guide/',
+    title: 'Chinese Bearing Manufacturers: C&U, ZWZ, LYC, HRB Compared',
+    description: "China produces ~75% of the world's bearings by volume. The quality gap vs European/Japanese brands is real but often overstated. Here's how to source safely.",
+    date: 'Oct 7, 2026',
+    readTime: '8 min',
+    tag: 'Sourcing',
+  },
+  {
+    href: '/blog/skf-vs-nsk-vs-fag-bearing-comparison/',
+    title: 'SKF vs NSK vs FAG Bearings: Which Brand Should You Choose?',
+    description: 'For standard DGBB series, dimensions are identical across all major brands. The premium is justified in specific scenarios — here is the decision framework.',
+    date: 'Oct 4, 2026',
+    readTime: '7 min',
+    tag: 'Brand Comparison',
+  },
+  {
+    href: '/blog/iso-281-bearing-life-calculation/',
+    title: 'ISO 281 Bearing Life Calculation: L10 Formula Explained',
+    description: 'Complete guide to the L10 formula: exponents for ball vs roller bearings, the L10h conversion, common errors, and target life values by application type.',
+    date: 'Oct 1, 2026',
+    readTime: '6 min',
+    tag: 'Calculations',
+  },
+];
+---
+<Base title={title} description={description} breadcrumbItems={[{ name: 'Blog', url: '/blog/' }]}>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-theme-primary mb-2">Bearing Knowledge Blog</h1>
+      <p class="text-theme-secondary">Practical guides for mechanical engineers and procurement teams — covering ISO standards, brand selection, Chinese sourcing, and fit calculations.</p>
+    </div>
+
+    <div class="space-y-6">
+      {posts.map(post => (
+        <a href={post.href} class="card block hover:border-orange-400/40 transition-colors group">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-theme-tertiary text-theme-muted">{post.tag}</span>
+            <span class="text-xs text-theme-muted">{post.date} · {post.readTime} read</span>
+          </div>
+          <h2 class="text-lg font-semibold text-theme-primary group-hover:accent-text transition-colors mb-2">{post.title}</h2>
+          <p class="text-sm text-theme-secondary">{post.description}</p>
+          <p class="text-sm accent-text mt-3">Read article →</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-10 p-6 card text-center">
+      <p class="text-theme-secondary text-sm mb-3">Need a bearing spec, interchange, or life calculation?</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/bearing-life-calculator/" class="accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Bearing Life Calculator</a>
+        <a href="/bearing-interchange/" class="text-sm font-semibold px-4 py-2 rounded-lg border border-theme hover:bg-theme-tertiary transition-colors text-theme-primary">Brand Interchange</a>
+        <a href="/bearing-size-chart/" class="text-sm font-semibold px-4 py-2 rounded-lg border border-theme hover:bg-theme-tertiary transition-colors text-theme-primary">Size Chart</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -149,6 +149,9 @@ const interchangeData = BEARINGS.map(b => ({
   }
 
   function doSearch() {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'calculator_used', { tool_name: 'bearing-interchange' });
+    }
     const raw     = modelInp.value.trim();
     if (!raw) return;
     const cleaned = stripSuffix(raw);

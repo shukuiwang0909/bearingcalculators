@@ -165,6 +165,9 @@ const tolData = {
   }
 
   function analyze() {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'calculator_used', { tool_name: 'bearing-fit-calculator' });
+    }
     var shaftD    = parseFloat(document.getElementById('shaft-d').value);
     var shaftG    = document.getElementById('shaft-grade').value;
     var housingD  = parseFloat(document.getElementById('housing-d').value);

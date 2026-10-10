@@ -1,0 +1,124 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const title = 'ISO 281 Bearing Life Calculation: L10 Formula Explained | BearingCalculators';
+const description = 'Complete guide to ISO 281 L10 bearing life calculation. Understand the C/P ratio, exponent differences for ball vs roller bearings, and how to convert million revolutions to hours.';
+const pubDate = '2026-10-01';
+---
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  pubDate={pubDate}
+  breadcrumbItems={[
+    { name: 'Blog', url: '/blog/' },
+    { name: 'ISO 281 Bearing Life Calculation', url: '/blog/iso-281-bearing-life-calculation/' },
+  ]}
+>
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <header class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">Published 1 Oct 2026 · 6 min read</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-3">ISO 281 Bearing Life Calculation: L10 Formula Explained</h1>
+      <p class="text-theme-secondary text-lg">The L10 life formula is the foundation of bearing selection. Here is exactly how it works, what the exponents mean, and where engineers commonly make errors.</p>
+    </header>
+
+    <div class="prose-bearing space-y-6 text-theme-secondary">
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">What Is L10 Life?</h2>
+        <p>L10 is the basic rating life — the number of million revolutions (or hours at a given speed) that 90% of a group of identical bearings will reach or exceed before fatigue failure. In other words, 10% will fail before L10, and 90% will survive.</p>
+        <p class="mt-3">It is defined by ISO 281:2007 and used universally across bearing manufacturers. When a catalog lists "C = 19.5 kN" for a 6206 bearing, that C is the ISO dynamic load rating that feeds directly into the L10 formula.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">The Core Formula</h2>
+        <div class="card font-mono text-sm py-4 px-6 space-y-2">
+          <p>L10 = (C / P)<sup>p</sup></p>
+          <p class="text-theme-muted">L10 — basic rating life [millions of revolutions]</p>
+          <p class="text-theme-muted">C — basic dynamic load rating [kN]</p>
+          <p class="text-theme-muted">P — equivalent dynamic bearing load [kN]</p>
+          <p class="text-theme-muted">p — life exponent: <strong class="text-theme-primary">3</strong> for ball bearings, <strong class="text-theme-primary">10/3 ≈ 3.33</strong> for roller bearings</p>
+        </div>
+        <p class="mt-3">To convert to hours:</p>
+        <div class="card font-mono text-sm py-3 px-6">
+          <p>L10h = L10 × 10<sup>6</sup> / (60 × n)</p>
+          <p class="text-theme-muted mt-1">n — rotational speed [rpm]</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Worked Example: 6205 at 1450 rpm</h2>
+        <p>A 6205 deep groove ball bearing has C = 14.0 kN. If the equivalent load P = 3.5 kN and speed n = 1450 rpm:</p>
+        <div class="card font-mono text-sm py-4 px-6 space-y-2">
+          <p>L10 = (14.0 / 3.5)<sup>3</sup> = 4<sup>3</sup> = 64 million revolutions</p>
+          <p>L10h = 64 × 10<sup>6</sup> / (60 × 1450) = <strong class="text-theme-primary">735 hours</strong></p>
+        </div>
+        <p class="mt-3">For a motor running two shifts (16 h/day), that is roughly 46 days of operation — a bearing this lightly sized for this load would be marginal.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Why the Exponent Matters</h2>
+        <p>The exponent p is often overlooked. For ball bearings (p = 3), doubling the C/P ratio multiplies life by 8×. For roller bearings (p = 10/3), the same doubling gives 10.1× life improvement. This means roller bearings are more sensitive to load ratio changes — worth knowing when selecting between a 6206 (ball) and an NU206 (cylinder roller) for the same application.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Common Errors in Practice</h2>
+        <ul class="space-y-3 list-none">
+          {[
+            ['Using axial load as equivalent load P', 'P must be calculated from both radial (Fr) and axial (Fa) components. For DGBB: P = XFr + YFa where X and Y are load factors from the bearing catalog.'],
+            ['Ignoring operating temperature', 'At temperatures above 120°C, the dynamic load rating C must be reduced by a temperature factor (kt ≤ 1). ISO 281 Annex A covers this.'],
+            ['Confusing C with C0', 'C is the dynamic load rating (for life calculations). C0 is the static load rating (for maximum allowable load under static conditions). Never use C0 in the L10 formula.'],
+            ['Forgetting speed in L10h conversion', 'L10 is in million revolutions, not hours. The 60 × n denominator is critical. At 3000 rpm vs 1500 rpm, L10h halves even though L10 stays the same.'],
+          ].map(([err, fix]) => (
+            <li class="card">
+              <p class="font-semibold text-theme-primary mb-1">{err}</p>
+              <p class="text-sm">{fix}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">L10 vs L10h Target Values</h2>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-theme">
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Application</th>
+              <th class="text-right py-2 text-theme-muted font-medium">Typical L10h target</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['Agricultural machinery', '1,000–3,000 h'],
+              ['Electric motors (general)', '20,000–30,000 h'],
+              ['Gearboxes, pumps', '20,000–50,000 h'],
+              ['Machine tool spindles', '30,000–50,000 h'],
+              ['Railway axleboxes', '500,000 h+'],
+            ].map(([app, val]) => (
+              <tr class="border-b border-theme">
+                <td class="py-2 pr-4 text-theme-secondary">{app}</td>
+                <td class="py-2 text-right font-mono text-theme-primary">{val}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Try the Calculator</h2>
+        <p>Use our <a href="/bearing-life-calculator/" class="accent-text hover:underline">free ISO 281 Bearing Life Calculator</a> to run L10 and L10h for any DGBB bearing. You can select a model to pre-fill C, or enter custom values for rollers.</p>
+        <a href="/bearing-life-calculator/" class="inline-block mt-3 accent-bg text-sm font-semibold px-4 py-2.5 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Open Bearing Life Calculator →</a>
+      </section>
+
+      <section class="disclaimer rounded-lg p-4 text-sm">
+        <strong>Note:</strong> This article covers ISO 281 basic rating life only. Modified rating life (Lnm, ISO 281:2007 Annex A) with lubrication and contamination factors (a<sub>ISO</sub>) can significantly alter the result. For critical applications, consult the bearing manufacturer's application engineering team.
+      </section>
+
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-theme flex gap-4 flex-wrap">
+      <a href="/bearing-life-calculator/" class="text-sm accent-text hover:underline">← Bearing Life Calculator</a>
+      <a href="/blog/skf-vs-nsk-vs-fag-bearing-comparison/" class="text-sm accent-text hover:underline">SKF vs NSK vs FAG →</a>
+    </div>
+  </article>
+</Base>

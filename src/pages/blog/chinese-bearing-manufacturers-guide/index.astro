@@ -1,0 +1,145 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const title = 'Chinese Bearing Manufacturers: C&U, ZWZ, LYC, HRB Compared | BearingCalculators';
+const description = "Practical guide to China's four major bearing manufacturers: C&U, ZWZ, LYC, and HRB. Covers quality tiers, certifications, price ranges, and how to source safely for industrial procurement.";
+const pubDate = '2026-10-07';
+---
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  pubDate={pubDate}
+  breadcrumbItems={[
+    { name: 'Blog', url: '/blog/' },
+    { name: 'Chinese Bearing Manufacturers', url: '/blog/chinese-bearing-manufacturers-guide/' },
+  ]}
+>
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <header class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">Published 7 Oct 2026 · 8 min read</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-3">Chinese Bearing Manufacturers: C&amp;U, ZWZ, LYC, HRB Compared</h1>
+      <p class="text-theme-secondary text-lg">China produces roughly 75% of the world's bearings by volume. The gap between top Chinese manufacturers and European/Japanese Tier 1 is smaller than most Western engineers assume — if you know which factories to use and for what applications.</p>
+    </header>
+
+    <div class="space-y-6 text-theme-secondary">
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">The Four Major Chinese Bearing Manufacturers</h2>
+        <p>China has hundreds of bearing manufacturers, but four dominate export-quality production. These are sometimes called the "Four Major Factories" (四大轴承厂) in Chinese industry, though consolidation and new entrants have complicated this label.</p>
+      </section>
+
+      <section>
+        <div class="space-y-5">
+          {[
+            {
+              name: 'C&U (Changjiang Bearing / 常州长江轴承)',
+              hq: 'Changzhou, Jiangsu',
+              certifications: ['ISO 9001', 'IATF 16949 (automotive)', 'TS 16949'],
+              strengths: ['Largest Chinese bearing exporter by volume', 'Automotive OEM supplier (Volkswagen, GM supply chain)', 'Very wide product range including specialty types', 'Aggressive export pricing with reasonable quality'],
+              weaknesses: ['Quality consistency can vary by production batch', 'Less traceability documentation than European brands'],
+              bestFor: 'High-volume industrial procurement, automotive aftermarket, non-critical replacements',
+              priceNote: '6205-2RS: approximately $0.80–1.50/pc FOB at MOQ 100',
+            },
+            {
+              name: 'ZWZ (Zhejiang Wanxiang / 万向钱潮)',
+              hq: 'Hangzhou, Zhejiang',
+              certifications: ['ISO 9001', 'IATF 16949', 'AS9100 (aerospace, selected lines)'],
+              strengths: ['Wanxiang Group subsidiary — one of China\'s largest auto parts conglomerates', 'Tighter dimensional tolerances, closer to P5 on standard products', 'Better batch-to-batch consistency vs. C&U', 'Used in Chinese high-speed rail components'],
+              weaknesses: ['Slightly higher price than C&U', 'MOQ requirements can be higher for specialty items'],
+              bestFor: 'Applications requiring closer tolerances within Chinese sourcing, semi-critical machinery',
+              priceNote: '6205-2RS: approximately $1.00–1.80/pc FOB at MOQ 100',
+            },
+            {
+              name: 'LYC (Luoyang Bearing / 洛阳轴承)',
+              hq: 'Luoyang, Henan',
+              certifications: ['ISO 9001', 'Military standard GB/T products', 'Nuclear power qualified lines'],
+              strengths: ['State-owned enterprise with roots in 1950s Soviet-era technology transfer', 'Produces large-size and specialty bearings (slewing rings, military)', 'Strong in domestic Chinese industrial market', 'Produces to GB/T national standard with full traceability'],
+              weaknesses: ['Export marketing and documentation less developed than C&U', 'Mainly strong in larger bearings; small DGBB is not their focus', 'Longer lead times on specialty items'],
+              bestFor: 'Large bearings, Chinese domestic market projects, state-owned enterprise procurement',
+              priceNote: '6205-2RS: approximately $0.90–1.60/pc FOB at MOQ 100',
+            },
+            {
+              name: 'HRB (Harbin Bearing / 哈尔滨轴承)',
+              hq: 'Harbin, Heilongjiang',
+              certifications: ['ISO 9001', 'Aviation qualified lines (COMAC supply chain)', 'Military qualified'],
+              strengths: ['Historically produced precision bearings for Chinese aerospace and defense', 'Aviation-grade lines available (though separate from standard industrial)', 'Standard P0 products are price-competitive'],
+              weaknesses: ['Standard industrial products are entry-level quality', 'Less global distributor network than C&U', 'Quality control on standard lines not at ZWZ level'],
+              bestFor: 'Price-sensitive bulk procurement, applications where replacement frequency is budgeted',
+              priceNote: '6205-2RS: approximately $0.70–1.30/pc FOB at MOQ 100',
+            },
+          ].map(m => (
+            <div class="card">
+              <h3 class="font-semibold text-theme-primary mb-1">{m.name}</h3>
+              <p class="text-xs text-theme-muted mb-3">{m.hq}</p>
+              <div class="grid sm:grid-cols-2 gap-3 text-sm mb-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-1">Strengths</p>
+                  <ul class="space-y-0.5">
+                    {m.strengths.map(s => <li class="flex gap-1.5"><span class="accent-text">+</span>{s}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-widest text-theme-muted mb-1">Watch Out</p>
+                  <ul class="space-y-0.5">
+                    {m.weaknesses.map(w => <li class="flex gap-1.5"><span class="text-amber-400">!</span>{w}</li>)}
+                  </ul>
+                </div>
+              </div>
+              <p class="text-sm"><strong class="text-theme-primary">Best for:</strong> {m.bestFor}</p>
+              <p class="text-xs text-theme-muted mt-1">{m.priceNote}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Chinese vs European/Japanese: The Real Quality Gap</h2>
+        <p>The quality difference is real but often overstated. For standard P0 tolerance DGBB bearings in non-critical applications:</p>
+        <ul class="space-y-2 mt-3">
+          {[
+            'Dimensions: Chinese top-tier (ZWZ, C&U) consistently meet ISO 15:2017 dimensional tolerances. Random dimensional checks rarely reveal deviations outside tolerance.',
+            'Surface finish: Raceway surface finish on Chinese bearings is typically Ra 0.1–0.2 µm vs. Ra 0.05–0.1 µm for SKF/FAG. This affects noise and early-life fatigue slightly but rarely matters in P0 applications.',
+            'Steel cleanliness: This is the real variable. European vacuum-degassed bearing steel has lower inclusion counts, which is the primary driver of fatigue life in the high-cycle regime. Chinese steel has improved significantly since 2010 but is not yet at Swedish or German levels for the highest-demand applications.',
+            'Lubrication: Chinese bearings typically use petroleum-based greases that are adequate for −10°C to +100°C. SKF and FAG use proprietary greases optimized for specific temperature ranges.',
+          ].map(item => (
+            <li class="flex gap-2 text-sm">
+              <span class="accent-text flex-shrink-0 mt-0.5">→</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">How to Source Chinese Bearings Safely</h2>
+        <div class="space-y-3">
+          {[
+            ['Request material certificates', 'Ask for GB/T 18254 steel certificates. Reputable manufacturers provide these for each batch.'],
+            ['Start with a sample order', 'Order 10–20 pcs before committing to 500+. Measure bore, OD, and width with calibrated instruments. Check for corrosion on raceways.'],
+            ['Specify the manufacturer explicitly', 'On purchase orders, specify "C&U" or "ZWZ" — not just "Chinese brand." Generic Chinese sourcing can introduce unknown Tier 3 factories.'],
+            ['Buy from established distributors', 'Authentic factory-authorized distributors provide genuine product. The Chinese market has significant counterfeit bearing problems — especially for SKF markings on Chinese bearings.'],
+            ['Define acceptance criteria', 'For large procurement, specify dimensional tolerance class (P0), vibration limits (ABMA), and grease type in the PO.'],
+          ].map(([title, desc]) => (
+            <div class="card">
+              <p class="font-semibold text-theme-primary text-sm mb-1">{title}</p>
+              <p class="text-sm">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Get Factory-Direct Quotes</h2>
+        <p>We work with verified C&U, ZWZ, LYC, and HRB distributors. Use our RFQ form to request pricing for your specific models and quantities — we respond within 24 hours with FOB pricing and minimum order quantities.</p>
+        <a href="/request-a-quote/" class="inline-block mt-3 accent-bg text-sm font-semibold px-4 py-2.5 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Request a Quote →</a>
+      </section>
+
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-theme flex gap-4 flex-wrap">
+      <a href="/blog/skf-vs-nsk-vs-fag-bearing-comparison/" class="text-sm accent-text hover:underline">← SKF vs NSK vs FAG</a>
+      <a href="/bearing-interchange/" class="text-sm accent-text hover:underline">Bearing Interchange Tool →</a>
+    </div>
+  </article>
+</Base>

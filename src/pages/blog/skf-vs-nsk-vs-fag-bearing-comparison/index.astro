@@ -1,0 +1,175 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const title = 'SKF vs NSK vs FAG Bearings: Which Brand Should You Choose? | BearingCalculators';
+const description = 'Practical comparison of SKF, NSK, FAG, NTN, and KOYO deep groove ball bearings. Covers quality tiers, price differences, and when to choose each brand for industrial applications.';
+const pubDate = '2026-10-04';
+---
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  pubDate={pubDate}
+  breadcrumbItems={[
+    { name: 'Blog', url: '/blog/' },
+    { name: 'SKF vs NSK vs FAG', url: '/blog/skf-vs-nsk-vs-fag-bearing-comparison/' },
+  ]}
+>
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <header class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">Published 4 Oct 2026 · 7 min read</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-3">SKF vs NSK vs FAG Bearings: Which Brand Should You Choose?</h1>
+      <p class="text-theme-secondary text-lg">For 6200 and 6300 series deep groove ball bearings, the dimensions are identical across all major brands — yet price differences can reach 40%. Here is when the premium is justified.</p>
+    </header>
+
+    <div class="space-y-6 text-theme-secondary">
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">The ISO 15 Foundation</h2>
+        <p>All major bearing brands — SKF, NSK, FAG (Schaeffler), NTN, KOYO, NACHI, and Timken — produce 6200/6300/6000 series bearings to <strong class="text-theme-primary">ISO 15:2017</strong>. This means a 6205 from SKF and a 6205 from NSK are dimensionally interchangeable: same 25×52×15mm envelope, same fillet radius, same dynamic load rating (C = 14.0 kN) from the ISO standard.</p>
+        <p class="mt-3">The differences lie in manufacturing consistency, internal geometry tolerances, lubricant quality, and QA traceability — none of which appear on the dimensional datasheet.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Brand Overview</h2>
+        <div class="space-y-4">
+          {[
+            {
+              brand: 'SKF (Sweden)',
+              tier: 'Tier 1 Premium',
+              strengths: ['Widest product range including specialty variants', 'Strong application engineering support', 'CARB, Explorer, and E-Design series for specific applications', 'Extensive certification for aerospace and rail'],
+              when: 'OEM specifications, critical infrastructure, applications where traceability matters',
+              note: 'SKF publishes the most comprehensive online catalog including bearing selector tools.',
+            },
+            {
+              brand: 'FAG / Schaeffler (Germany)',
+              tier: 'Tier 1 Premium',
+              strengths: ['X-life extended service life bearings', 'Strong in automotive and machine tool sectors', 'INA (linear) + FAG (rolling) under same parent', 'Excellent dimensional consistency at P5/P6 precision'],
+              when: 'German machinery OEM requirements, high-precision spindle applications',
+              note: 'Schaeffler FAG is frequently specified by German machine tool builders as a house standard.',
+            },
+            {
+              brand: 'NSK (Japan)',
+              tier: 'Tier 1 Premium',
+              strengths: ['Ultra-low noise bearings for motors and HVAC', 'DDU seal design widely regarded as best-in-class for contamination exclusion', 'Strong in semiconductor and medical equipment', 'Competitive pricing vs SKF/FAG'],
+              when: 'Low-noise applications, semiconductor equipment, Japanese OEM specs',
+              note: 'NSK uses 2RS (not 2RS1) and ZZ (not Z) suffix conventions.',
+            },
+            {
+              brand: 'NTN (Japan)',
+              tier: 'Tier 1',
+              strengths: ['Competitive pricing within Tier 1', 'Strong automotive supply chain presence', 'Good availability in Asia-Pacific'],
+              when: 'Cost-conscious Tier 1 requirement, automotive aftermarket',
+              note: 'NTN is a common SKF/FAG alternative at 5–15% lower price in most markets.',
+            },
+            {
+              brand: 'KOYO / JTEKT (Japan)',
+              tier: 'Tier 1',
+              strengths: ['Toyota group company, strong automotive pedigree', 'Competitive pricing vs SKF/FAG', 'Good standard DGBB range'],
+              when: 'Automotive aftermarket, general industrial where Tier 1 is required but cost matters',
+              note: 'KOYO and JTEKT are the same company; both brand names appear on products.',
+            },
+          ].map(b => (
+            <div class="card">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="font-semibold text-theme-primary">{b.brand}</h3>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-theme-tertiary text-theme-muted">{b.tier}</span>
+              </div>
+              <ul class="text-sm space-y-1 mb-3">
+                {b.strengths.map(s => <li class="flex gap-2"><span class="accent-text flex-shrink-0">+</span>{s}</li>)}
+              </ul>
+              <p class="text-sm"><strong class="text-theme-primary">Best for:</strong> {b.when}</p>
+              <p class="text-xs text-theme-muted mt-1">{b.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Price Comparison (6205, 2RS, single unit)</h2>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-theme">
+              <th class="text-left py-2 pr-4 text-theme-muted font-medium">Brand</th>
+              <th class="text-right py-2 pr-4 text-theme-muted font-medium">Typical USD/pc</th>
+              <th class="text-right py-2 text-theme-muted font-medium">vs SKF</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['SKF 6205-2RS1', '$3.80–5.50', '—'],
+              ['FAG 6205-2RSR', '$3.50–5.00', '−8%'],
+              ['NSK 6205DDU', '$3.20–4.50', '−15%'],
+              ['NTN 6205LLU', '$2.80–4.00', '−25%'],
+              ['KOYO 6205-2RS', '$2.60–3.80', '−30%'],
+              ['C&U / ZWZ / LYC', '$0.80–1.80', '−70–80%'],
+            ].map(([brand, price, diff]) => (
+              <tr class="border-b border-theme">
+                <td class="py-2 pr-4 text-theme-secondary">{brand}</td>
+                <td class="py-2 pr-4 text-right font-mono text-theme-primary">{price}</td>
+                <td class="py-2 text-right font-mono text-theme-muted">{diff}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="text-xs text-theme-muted mt-2">Prices are indicative distributor single-unit prices, USD, 2026. Volume pricing and direct factory pricing will differ substantially.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Decision Framework</h2>
+        <div class="space-y-3">
+          {[
+            ['OEM spec calls out a brand explicitly', 'Use the specified brand. Substitution may void warranty.'],
+            ['Critical application (safety-critical, high-downtime cost)', 'SKF, FAG, or NSK. Document the brand and batch for traceability.'],
+            ['General industrial maintenance (motors, conveyors, pumps)', 'NTN or KOYO delivers Tier 1 quality at lower cost. NSK is a strong choice for motors where noise matters.'],
+            ['High-volume procurement (500+ pcs) with P0 tolerance sufficient', 'Chinese Tier 1 (ZWZ, LYC) is worth evaluating. Request material certificates and sample testing before committing.'],
+            ['Budget replacement, non-critical, easily accessible', 'Chinese alternatives (C&U, HRB) are acceptable. Budget for more frequent replacement in the maintenance schedule.'],
+          ].map(([scenario, rec]) => (
+            <div class="card">
+              <p class="font-semibold text-theme-primary text-sm mb-1">{scenario}</p>
+              <p class="text-sm">{rec}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Suffix Differences by Brand</h2>
+        <p class="mb-3">All brands use the same base model number (6205, 6305, etc.) but seal suffixes differ:</p>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-theme">
+              <th class="text-left py-2 pr-3 text-theme-muted font-medium">Brand</th>
+              <th class="text-center py-2 pr-3 text-theme-muted font-medium">Rubber seal both sides</th>
+              <th class="text-center py-2 text-theme-muted font-medium">Metal shield both sides</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['SKF', '6205-2RS1', '6205-2Z'],
+              ['FAG', '6205-2RSR', '6205-2Z'],
+              ['NSK', '6205DDU', '6205ZZ'],
+              ['NTN', '6205LLU', '6205ZZ'],
+              ['KOYO', '6205-2RS', '6205-2Z'],
+              ['NACHI', '6205-2NSE9', '6205ZZE'],
+              ['Timken', '6205 2RS', '6205 ZZ'],
+            ].map(([brand, sealed, shielded]) => (
+              <tr class="border-b border-theme">
+                <td class="py-2 pr-3 text-theme-secondary">{brand}</td>
+                <td class="py-2 pr-3 text-center font-mono text-theme-primary text-xs">{sealed}</td>
+                <td class="py-2 text-center font-mono text-theme-primary text-xs">{shielded}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="text-xs text-theme-muted mt-2">Use our <a href="/bearing-interchange/" class="accent-text hover:underline">Bearing Interchange tool</a> to look up equivalents across brands instantly.</p>
+      </section>
+
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-theme flex gap-4 flex-wrap">
+      <a href="/blog/" class="text-sm accent-text hover:underline">← All posts</a>
+      <a href="/blog/chinese-bearing-manufacturers-guide/" class="text-sm accent-text hover:underline">Chinese Bearing Manufacturers →</a>
+    </div>
+  </article>
+</Base>
