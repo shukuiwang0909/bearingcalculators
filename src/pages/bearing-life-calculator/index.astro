@@ -22,8 +22,20 @@ const faqItems = [
   { question: 'What is equivalent dynamic load P?', answer: 'P is the combined radial and axial load the bearing "sees," accounting for load direction. For pure radial load with no axial component, P = Fr (radial force). For combined loading: P = X·Fr + Y·Fa, where X and Y are factors from the bearing catalogue.' },
   { question: 'What is a realistic bearing life target?', answer: 'Electric motors: 20,000–40,000 h. Industrial gearboxes: 30,000 h. Automotive: 3,000–5,000 h. Pumps: 17,500 h (ISO 10816 general guideline). If your calculated L10h is less than twice the target, consider a larger bearing.' },
 ];
+
+const toolSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ISO 281 Bearing Life Calculator",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://bearingcalculators.com/bearing-life-calculator/",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free ISO 281 L10 bearing life calculator. Enter dynamic load rating C, equivalent load P, and RPM to get L10 life in millions of revolutions and operating hours. Supports ball and roller bearings with sensitivity analysis.",
+  "featureList": "ISO 281 L10 formula, ball and roller bearing support, load sensitivity table, application life targets",
+};
 ---
-<Base title={title} description={description} breadcrumbItems={[{ name: 'Calculators', url: '/bearing-life-calculator/' }, { name: 'Bearing Life', url: '/bearing-life-calculator/' }]}>
+<Base title={title} description={description} jsonLd={toolSchema} breadcrumbItems={[{ name: 'Calculators', url: '/bearing-life-calculator/' }, { name: 'Bearing Life', url: '/bearing-life-calculator/' }]}>
 
   <section class="max-w-6xl mx-auto px-4 py-10">
     <div class="mb-8">

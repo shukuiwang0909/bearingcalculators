@@ -24,8 +24,20 @@ const tableData = BEARINGS.map(b => ({
   oil: b.speedLimits.oil,
   weight: b.weight,
 }));
+
+const toolSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Bearing Size Chart — 6200 6300 6000 Series",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://bearingcalculators.com/bearing-size-chart/",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Searchable bearing size chart for 6200, 6300, and 6000 series deep groove ball bearings. Bore, OD, width, dynamic load C, static load C0, speed limits, and weight for all ISO standard sizes.",
+  "featureList": "6200/6300/6000 series data, bore/OD/width dimensions, C and C0 load ratings, speed limits, series filter, search",
+};
 ---
-<Base title={title} description={description} breadcrumbItems={[{ name: 'Size Chart', url: '/bearing-size-chart/' }]}>
+<Base title={title} description={description} jsonLd={toolSchema} breadcrumbItems={[{ name: 'Size Chart', url: '/bearing-size-chart/' }]}>
 
   <section class="max-w-6xl mx-auto px-4 py-10">
     <div class="mb-8">
