@@ -4,12 +4,25 @@ import Base from '../../../layouts/Base.astro';
 const title = 'Chinese Bearing Manufacturers: C&U, ZWZ, LYC, HRB Compared | BearingCalculators';
 const description = "Practical guide to China's four major bearing manufacturers: C&U, ZWZ, LYC, and HRB. Covers quality tiers, certifications, price ranges, and how to source safely for industrial procurement.";
 const pubDate = '2026-10-07';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What are the four major Chinese bearing manufacturers?", "acceptedAnswer": { "@type": "Answer", "text": "China's four major bearing manufacturers (四大轴承厂) are: C&U (常州长江轴承 / Changzhou), ZWZ (万向钱潮 / Hangzhou, Wanxiang Group), LYC (洛阳轴承 / Luoyang), and HRB (哈尔滨轴承 / Harbin). C&U is the largest Chinese bearing exporter by volume. ZWZ offers the tightest tolerances within Chinese production. LYC specializes in large bearings and state-sector applications. HRB has aviation-qualified production lines." } },
+    { "@type": "Question", "name": "Are Chinese bearings as good as SKF or FAG?", "acceptedAnswer": { "@type": "Answer", "text": "For standard P0 tolerance DGBB in non-critical applications, top Chinese manufacturers (ZWZ, C&U) consistently meet ISO 15:2017 dimensional tolerances. The real quality gap is in steel cleanliness — European vacuum-degassed bearing steel has lower inclusion counts, which matters in high-cycle fatigue applications. For standard industrial use (conveyor idlers, pumps, light machinery), ZWZ or C&U offer cost-effective performance. For high-speed motors, precision spindles, or safety-critical applications, stick with Tier 1 European/Japanese brands." } },
+    { "@type": "Question", "name": "How can I tell if Chinese bearings are genuine factory products?", "acceptedAnswer": { "@type": "Answer", "text": "Request material certificates (GB/T 18254 steel certificate) for each batch. Specify the manufacturer explicitly on the PO — write 'C&U' or 'ZWZ', not just 'Chinese bearing'. Buy from authorized distributors rather than general trading companies. For large orders, use third-party inspection (SGS, TUV, BV) with dimensional checks using calibrated instruments. The Chinese bearing market has significant counterfeit problems, especially SKF markings on unbranded Chinese bearings." } },
+    { "@type": "Question", "name": "What is the typical price of Chinese bearings vs SKF?", "acceptedAnswer": { "@type": "Answer", "text": "For a common 6205-2RS at MOQ 100: C&U approximately USD 0.80–1.50 FOB, ZWZ approximately USD 1.00–1.80 FOB, LYC approximately USD 0.90–1.60 FOB, HRB approximately USD 0.70–1.30 FOB. SKF retail is approximately USD 5–8. The 3–5× cost difference makes Chinese bearings very attractive for high-volume, non-critical replacements." } },
+    { "@type": "Question", "name": "Which Chinese bearing manufacturer should I choose for industrial applications?", "acceptedAnswer": { "@type": "Answer", "text": "For general industrial procurement: ZWZ offers the best balance of quality and price for precision-sensitive applications. C&U is the best choice for high-volume commodity procurement with the widest product range. LYC is preferred for large bearings (bore >100mm) and Chinese domestic market projects. HRB is suitable for price-sensitive bulk orders where frequent replacement is budgeted. Always start with a sample order of 10–20 pieces before committing to 500+." } },
+  ],
+};
 ---
 <Base
   title={title}
   description={description}
   ogType="article"
   pubDate={pubDate}
+  jsonLd={faqSchema}
   breadcrumbItems={[
     { name: 'Blog', url: '/blog/' },
     { name: 'Chinese Bearing Manufacturers', url: '/blog/chinese-bearing-manufacturers-guide/' },

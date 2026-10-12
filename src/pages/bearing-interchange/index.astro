@@ -31,8 +31,20 @@ const toolSchema = {
   "description": "Free bearing cross-reference tool. Enter any SKF, NSK, FAG, NTN, KOYO, NACHI, or Timken model number to find equivalents and Chinese alternatives (C&U, ZWZ, LYC, HRB). Covers 6200/6300/6000 series DGBB.",
   "featureList": "7-brand cross-reference, Chinese equivalent lookup, suffix guide (2RS/ZZ/C3), bearing specifications",
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Are SKF, NSK, FAG, and NTN bearings interchangeable?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All major brands — SKF, NSK, FAG, NTN, KOYO, NACHI, Timken — produce standard 6200/6300/6000 series DGBB to the same ISO 15:2017 dimensional tolerances. They are direct drop-in replacements. Differences in steel quality, grease, and internal tolerances exist but external dimensions and load ratings are equivalent for standard P0 grade." } },
+    { "@type": "Question", "name": "How do I read a bearing model number like 6205 2RS1?", "acceptedAnswer": { "@type": "Answer", "text": "6205 = series code: 6 (deep groove ball), 2 (series 2, medium cross-section), 05 (bore = 05×5 = 25mm). 2RS1 = suffix: 2RS = two rubber contact seals; the trailing '1' is SKF's proprietary variant. Other common suffixes: ZZ/Z = metal shields; C3 = internal clearance group 3 (larger than standard, for thermal expansion); 2Z = two metal shields (FAG notation)." } },
+    { "@type": "Question", "name": "What is the difference between 2RS and ZZ bearing shields?", "acceptedAnswer": { "@type": "Answer", "text": "2RS (rubber contact seal) — seals contact the inner ring, providing better protection against contamination and moisture. Slightly higher friction torque. Best for wet, dusty, or contaminated environments. ZZ (metal shield) — shields do not contact the inner ring, resulting in lower friction and higher speed capability. Better for clean, dry environments and higher speed applications." } },
+    { "@type": "Question", "name": "How do I find Chinese equivalents for SKF or FAG bearings?", "acceptedAnswer": { "@type": "Answer", "text": "For standard 6200/6300/6000 series, the ISO model number is universal. A 6205 from SKF is the same part number as 6205 from C&U or ZWZ — all use the ISO number. Chinese equivalents are dimensionally identical to ISO 15:2017 standard. Use this interchange tool to see Chinese manufacturer (C&U, ZWZ, LYC, HRB) model numbers and get a procurement quote." } },
+    { "@type": "Question", "name": "What is the C3 bearing clearance, and when do I need it?", "acceptedAnswer": { "@type": "Answer", "text": "C3 is internal clearance group 3, larger than the standard CN (Normal) clearance. Specify C3 when: bearing operating temperature will exceed 40°C above ambient; inner ring fit is tight interference fit on shaft; bearing is used in electric motors where thermal expansion during operation is expected. Without C3, thermal expansion can preload the bearing and dramatically reduce its service life." } },
+  ],
+};
 ---
-<Base title={title} description={description} jsonLd={toolSchema} breadcrumbItems={[{ name: 'Interchange', url: '/bearing-interchange/' }]}>
+<Base title={title} description={description} jsonLd={[toolSchema, faqSchema]} breadcrumbItems={[{ name: 'Interchange', url: '/bearing-interchange/' }]}>
 
   <section class="max-w-6xl mx-auto px-4 py-10">
     <div class="mb-8">
@@ -127,6 +139,23 @@ const toolSchema = {
 
     <div class="disclaimer rounded-lg p-4 mt-8 text-sm max-w-3xl">
       <strong>Note:</strong> For standard 6200/6300/6000 series deep groove ball bearings, all major brands (SKF, FAG, NSK, NTN, KOYO, NACHI, Timken) use the same ISO model number. This table covers MVP models; always confirm with the manufacturer for special designs or modified suffixes.
+    </div>
+
+    <div class="mt-10 max-w-3xl">
+      <h2 class="text-xl font-semibold text-theme-primary mb-5">Frequently Asked Questions</h2>
+      <div class="space-y-3">
+        {faqSchema.mainEntity.map((q: { name: string; acceptedAnswer: { text: string } }) => (
+          <details class="card group">
+            <summary class="cursor-pointer font-medium text-theme-primary text-sm list-none flex justify-between items-center gap-4">
+              {q.name}
+              <svg class="w-4 h-4 flex-shrink-0 text-theme-muted group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <p class="mt-3 text-sm text-theme-secondary leading-relaxed">{q.acceptedAnswer.text}</p>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 </Base>

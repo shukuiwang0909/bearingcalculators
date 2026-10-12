@@ -4,12 +4,25 @@ import Base from '../../../layouts/Base.astro';
 const title = 'ISO 281 Bearing Life Calculation: L10 Formula Explained | BearingCalculators';
 const description = 'Complete guide to ISO 281 L10 bearing life calculation. Understand the C/P ratio, exponent differences for ball vs roller bearings, and how to convert million revolutions to hours.';
 const pubDate = '2026-10-01';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is ISO 281 L10 bearing life?", "acceptedAnswer": { "@type": "Answer", "text": "L10 is the basic rating life per ISO 281: the number of million revolutions that 90% of identical bearings will complete before fatigue failure under a given load. The L10 name comes from the 10% failure probability — 10% of bearings will fail before reaching this life figure." } },
+    { "@type": "Question", "name": "What does the exponent p mean in the L10 formula?", "acceptedAnswer": { "@type": "Answer", "text": "p is the life exponent in L10 = (C/P)^p. For ball bearings (DGBB, angular contact), p = 3. For roller bearings (cylindrical, tapered, spherical), p = 10/3 ≈ 3.33. The higher exponent for rollers means they are more sensitive to changes in the C/P ratio — doubling C/P multiplies life by 10× for rollers versus 8× for balls." } },
+    { "@type": "Question", "name": "What is the difference between L10 and L10h?", "acceptedAnswer": { "@type": "Answer", "text": "L10 is in millions of revolutions (dimensionless). L10h is L10 converted to hours using the formula: L10h = L10 × 10^6 / (60 × n), where n is rotational speed in RPM. Both express the same service life — L10h is simply more practical for scheduling maintenance intervals." } },
+    { "@type": "Question", "name": "What is the difference between C and C0 in bearing calculations?", "acceptedAnswer": { "@type": "Answer", "text": "C is the dynamic load rating used in the L10 life formula — it represents the load under which 90% of bearings would survive one million revolutions. C0 is the static load rating — the maximum load allowable under static or very slow rotation conditions. Never use C0 in the L10 formula: it will give grossly incorrect results." } },
+    { "@type": "Question", "name": "What L10h target should I use for electric motors?", "acceptedAnswer": { "@type": "Answer", "text": "For general-purpose electric motors operating 8 hours per day, the typical L10h design target is 20,000–30,000 hours. For continuous operation (24h), target 40,000–50,000 hours. ISO 281 annex D gives L10h targets by application category: general machinery 20,000 h, marine propulsion 50,000 h, machine tools 30,000–50,000 h." } },
+  ],
+};
 ---
 <Base
   title={title}
   description={description}
   ogType="article"
   pubDate={pubDate}
+  jsonLd={faqSchema}
   breadcrumbItems={[
     { name: 'Blog', url: '/blog/' },
     { name: 'ISO 281 Bearing Life Calculation', url: '/blog/iso-281-bearing-life-calculation/' },

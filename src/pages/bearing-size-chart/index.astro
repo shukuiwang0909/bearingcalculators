@@ -36,8 +36,20 @@ const toolSchema = {
   "description": "Searchable bearing size chart for 6200, 6300, and 6000 series deep groove ball bearings. Bore, OD, width, dynamic load C, static load C0, speed limits, and weight for all ISO standard sizes.",
   "featureList": "6200/6300/6000 series data, bore/OD/width dimensions, C and C0 load ratings, speed limits, series filter, search",
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What does bore, OD, and width mean for a bearing?", "acceptedAnswer": { "@type": "Answer", "text": "Bore (d) is the inner diameter — the shaft fits through here. OD (D) is the outer diameter — this sits in the housing. Width (B) is the axial dimension of the bearing. For a 6205: bore = 25mm, OD = 52mm, width = 15mm. These three dimensions fully define the bearing envelope and determine whether it fits in a given application." } },
+    { "@type": "Question", "name": "What is the difference between 6200, 6300, and 6000 series bearings?", "acceptedAnswer": { "@type": "Answer", "text": "All three are deep groove ball bearing (DGBB) series that differ in cross-section dimensions for a given bore. 6200 series: medium cross-section — the most common general-purpose series. 6300 series: heavier cross-section with larger OD and width — higher dynamic load capacity C at the same bore. 6000 series: extra-thin cross-section — smallest OD for a given bore, used in compact drives where radial space is limited but load is light." } },
+    { "@type": "Question", "name": "How do I choose the right bearing size for my application?", "acceptedAnswer": { "@type": "Answer", "text": "Start from the shaft size (bore), then calculate the required ISO 281 L10 life using the equivalent load P. Use our Bearing Life Calculator to check if a 6200 series bearing meets the target L10h. If not, upgrade to the 6300 series (same bore, higher C) or increase the bore. Key rule: a higher C/P ratio gives disproportionately longer life (L10 scales as (C/P)³ for ball bearings)." } },
+    { "@type": "Question", "name": "What is the difference between C and C0 load ratings?", "acceptedAnswer": { "@type": "Answer", "text": "C (dynamic load rating) is used in the ISO 281 L10 life formula for rotating applications. C0 (static load rating) is the maximum allowable load when the bearing is stationary or rotating very slowly (< 10 rpm). Never use C0 in the L10 formula — it gives incorrect results. The C0 value also determines the required minimum radial internal clearance when mounting with a press fit." } },
+    { "@type": "Question", "name": "How do I use this bearing size chart to find Chinese equivalent bearings?", "acceptedAnswer": { "@type": "Answer", "text": "All bearings on this chart follow ISO 15:2017, which Chinese manufacturers (C&U, ZWZ, LYC, HRB) also adhere to. The model number is universal — a 6205 from SKF has the same dimensions as a 6205 from C&U. Use our Bearing Interchange tool to see the specific model designations each brand uses (suffixes differ: SKF uses 2RS1, NSK uses DDU, etc.) and to request procurement quotes from Chinese factories." } },
+  ],
+};
 ---
-<Base title={title} description={description} jsonLd={toolSchema} breadcrumbItems={[{ name: 'Size Chart', url: '/bearing-size-chart/' }]}>
+<Base title={title} description={description} jsonLd={[toolSchema, faqSchema]} breadcrumbItems={[{ name: 'Size Chart', url: '/bearing-size-chart/' }]}>
 
   <section class="max-w-6xl mx-auto px-4 py-10">
     <div class="mb-8">
@@ -132,6 +144,23 @@ const toolSchema = {
 
     <div class="disclaimer rounded-lg p-4 mt-6 text-sm">
       <strong>Source:</strong> ISO 15:2017 and SKF General Catalogue. Load ratings (C, C₀) and speed limits are for reference. Always verify against the bearing manufacturer's current datasheet before design finalization.
+    </div>
+
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold text-theme-primary mb-5">Frequently Asked Questions</h2>
+      <div class="space-y-3 max-w-3xl">
+        {faqSchema.mainEntity.map((q: { name: string; acceptedAnswer: { text: string } }) => (
+          <details class="card group">
+            <summary class="cursor-pointer font-medium text-theme-primary text-sm list-none flex justify-between items-center gap-4">
+              {q.name}
+              <svg class="w-4 h-4 flex-shrink-0 text-theme-muted group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <p class="mt-3 text-sm text-theme-secondary leading-relaxed">{q.acceptedAnswer.text}</p>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 </Base>

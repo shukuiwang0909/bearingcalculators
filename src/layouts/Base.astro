@@ -98,6 +98,22 @@ const siteJsonLd = [
     })),
   }] : []),
   ...(Array.isArray(jsonLd) ? jsonLd : (jsonLd ? [jsonLd] : [])),
+  ...(ogType === "article" ? [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    "url": canonical,
+    ...(pubDate ? { "datePublished": pubDate } : {}),
+    "author": { "@type": "Organization", "name": "Bearing Calculators", "url": siteOrigin },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Bearing Calculators",
+      "url": siteOrigin,
+      "logo": { "@type": "ImageObject", "url": ogImage, "width": 1200, "height": 630 },
+    },
+    "inLanguage": "en",
+  }] : []),
 ];
 ---
 <!doctype html>
