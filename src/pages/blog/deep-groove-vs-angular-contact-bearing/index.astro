@@ -1,0 +1,206 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const title = 'Deep Groove Ball Bearing vs Angular Contact Bearing: Selection Guide | BearingCalculators';
+const description = 'When to use deep groove ball bearings (DGBB) vs angular contact bearings (ACB). Covers load direction, speed limits, mounting arrangements, and the decision framework for common industrial applications.';
+const pubDate = '2026-10-17';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the main difference between a DGBB and an angular contact bearing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A deep groove ball bearing (DGBB, 6xxx series) has a symmetric raceway that handles radial load and moderate bidirectional axial load without axial preload. An angular contact bearing (7xxx series) has an asymmetric raceway with a defined contact angle (typically 15°, 25°, or 40°) that handles combined radial and unidirectional axial load — but must be mounted in pairs to handle thrust in both directions." }
+    },
+    {
+      "@type": "Question",
+      "name": "When should I use a single DGBB instead of angular contact bearings?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Use a DGBB when: axial load is less than 30% of radial load; load direction is not predominantly axial; speed requirements are moderate; cost is a factor; single bearing per shaft position is acceptable. Common applications: conveyor idlers, electric motor non-drive ends, fans, agricultural equipment, and any shaft with mainly radial load." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are angular contact bearings always mounted in pairs?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A single angular contact bearing can only resist axial load in one direction — the direction defined by its contact angle. Axial load in the opposite direction would eject the balls. Mounting two bearings back-to-back (DB) or face-to-face (DF) creates a system that handles bidirectional axial load. Tandem (DT) mounting doubles the axial load capacity in one direction and is used for heavy one-directional thrust." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the contact angle affect in an angular contact bearing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Contact angle determines the ratio of axial to radial load capacity. 15° contact angle: high radial, moderate axial, highest speed (machine tool spindles). 25° contact angle: balanced radial and axial, general purpose. 40° contact angle: high axial capacity, lower radial, used for screw drives and ball screws. A higher contact angle increases axial stiffness but reduces maximum speed." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a DGBB replace an angular contact bearing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For light axial loads, yes — a DGBB can substitute for a 15° angular contact bearing if the axial component is below 30% of radial and speed is not near the limiting speed. For machine tool spindles, gearbox output shafts, or high-precision applications, do not substitute. The DGBB lacks the axial stiffness and radial preload capability required for precision running accuracy." }
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  pubDate={pubDate}
+  jsonLd={faqSchema}
+  breadcrumbItems={[
+    { name: 'Blog', url: '/blog/' },
+    { name: 'DGBB vs Angular Contact', url: '/blog/deep-groove-vs-angular-contact-bearing/' },
+  ]}
+>
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <header class="mb-8">
+      <p class="text-xs text-theme-muted mb-2">Published 17 Oct 2026 · 8 min read</p>
+      <h1 class="text-3xl font-bold text-theme-primary mb-3">Deep Groove Ball Bearing vs Angular Contact: Selection Guide</h1>
+      <p class="text-theme-secondary text-lg">Both bearings look similar in a catalog drawing, but their load-handling geometry is fundamentally different. Choosing the wrong type leads to premature failure — here is the decision framework.</p>
+    </header>
+
+    <div class="space-y-6 text-theme-secondary">
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">The Core Difference: Contact Geometry</h2>
+        <p>A <strong class="text-theme-primary">deep groove ball bearing (DGBB)</strong> has a symmetric raceway. The balls contact the raceway at a 0° nominal angle, so radial and small axial loads are handled equally in both directions with no external preload required.</p>
+        <p class="mt-3">An <strong class="text-theme-primary">angular contact bearing (ACB)</strong> has an offset raceway on the outer ring. The contact angle (α = 15°, 25°, or 40°) creates a line of action that passes through both raceways at that angle. This geometry provides high axial stiffness in one direction — but requires either an opposing bearing or a preload source to prevent the rings from separating under reverse axial load.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Side-by-Side Comparison</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border border-theme rounded-lg">
+            <thead>
+              <tr class="bg-theme-tertiary">
+                <th class="px-4 py-2 text-left text-theme-primary">Property</th>
+                <th class="px-4 py-2 text-left text-theme-primary">DGBB (6xxx)</th>
+                <th class="px-4 py-2 text-left text-theme-primary">Angular Contact (7xxx)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Radial load capacity', 'High', 'Moderate to high'],
+                ['Axial load capacity', 'Moderate (both directions)', 'High (one direction per bearing)'],
+                ['Mounting', 'Single bearing sufficient', 'Usually pairs required'],
+                ['Preload', 'Not required', 'Required for precision use'],
+                ['Speed limit', 'High (reference speed × 0.7–1.0)', 'Very high (machine tool grade)'],
+                ['Axial stiffness', 'Low to moderate', 'High (important for precision)'],
+                ['Cost', 'Lower', 'Higher (pair required)'],
+                ['Typical series', '6200, 6300, 6000, 6800', '7200, 7300, 7000'],
+              ].map(([prop, dgbb, acb]) => (
+                <tr class="border-t border-theme">
+                  <td class="px-4 py-2 font-medium text-theme-primary">{prop}</td>
+                  <td class="px-4 py-2">{dgbb}</td>
+                  <td class="px-4 py-2">{acb}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Angular Contact Mounting Arrangements</h2>
+        <div class="space-y-3">
+          {[
+            {
+              arrangement: 'Back-to-Back (DB)',
+              code: 'X arrangement',
+              desc: 'Outer ring faces touch. Highest moment stiffness — resists tilting. Used for shafts with overhanging loads (spindles, gearbox output). Most common arrangement.',
+            },
+            {
+              arrangement: 'Face-to-Face (DF)',
+              code: 'O arrangement',
+              desc: 'Inner ring faces touch. Lower moment stiffness than DB, but allows some angular misalignment. Used where shaft deflection or housing bore misalignment is expected.',
+            },
+            {
+              arrangement: 'Tandem (DT)',
+              code: 'T arrangement',
+              desc: 'Both bearings point the same direction. Doubles axial capacity in one direction only. Used for ball screws, high-thrust positioning axes. Must be paired with an opposing bearing at the other shaft end.',
+            },
+          ].map(a => (
+            <div class="p-4 card">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono accent-text font-bold text-sm">{a.code}</span>
+                <span class="font-semibold text-theme-primary">{a.arrangement}</span>
+              </div>
+              <p class="text-sm">{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Contact Angle Selection</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border border-theme rounded-lg">
+            <thead>
+              <tr class="bg-theme-tertiary">
+                <th class="px-3 py-2 text-left text-theme-primary">Contact Angle</th>
+                <th class="px-3 py-2 text-left text-theme-primary">Series designation</th>
+                <th class="px-3 py-2 text-left text-theme-primary">Best for</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['15°', '70xx C', 'Machine tool spindles, high-speed applications, highest speed rating'],
+                ['25°', '70xx AC (FAG) / 70xx A (SKF)', 'General purpose combined load, balanced radial/axial'],
+                ['40°', '70xx B', 'High axial loads, ball screws, low-to-moderate speed'],
+              ].map(([angle, series, use]) => (
+                <tr class="border-t border-theme">
+                  <td class="px-3 py-2 font-mono accent-text font-bold">{angle}</td>
+                  <td class="px-3 py-2 font-mono text-sm">{series}</td>
+                  <td class="px-3 py-2 text-sm">{use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">Decision Framework by Application</h2>
+        <div class="space-y-3">
+          {[
+            { app: 'Electric motor (drive end)', bearing: 'DGBB 6xxx or cylindrical roller', reason: 'Predominantly radial load; moderate axial handled by DGBB' },
+            { app: 'Machine tool spindle', bearing: 'Angular contact 7xxx, 15° or 25°, DB pair', reason: 'High speed, precision axial stiffness required' },
+            { app: 'Gearbox output shaft', bearing: 'Tapered roller or ACB DB pair', reason: 'Heavy combined load, high axial stiffness' },
+            { app: 'Pump shaft (centrifugal)', bearing: 'DGBB 6xxx with C3 clearance', reason: 'Radial + moderate axial; sealed versions for wet environment' },
+            { app: 'Ball screw / linear axis', bearing: 'ACB 7xxx, 40°, DT tandem', reason: 'Unidirectional thrust dominates; preload required' },
+            { app: 'Fan bearing (HVAC)', bearing: 'DGBB 6xxx or cylindrical roller', reason: 'Radial-dominant, low-to-medium speed, cost-sensitive' },
+            { app: 'Agricultural / off-road', bearing: 'DGBB 6xxx sealed (2RS)', reason: 'Contamination sealing priority; shock-load tolerance' },
+          ].map(a => (
+            <div class="flex gap-3 p-3 card items-start">
+              <div class="shrink-0 w-48">
+                <p class="text-sm font-semibold text-theme-primary">{a.app}</p>
+              </div>
+              <div>
+                <p class="text-sm font-mono accent-text">{a.bearing}</p>
+                <p class="text-xs text-theme-muted mt-0.5">{a.reason}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold text-theme-primary mb-3">FAQ</h2>
+        <div class="space-y-4">
+          {faqSchema.mainEntity.map((item) => (
+            <details class="card">
+              <summary class="font-semibold text-theme-primary cursor-pointer">{item.name}</summary>
+              <p class="mt-2 text-sm leading-relaxed">{item.acceptedAnswer.text}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="mt-10 pt-6 border-t border-theme">
+      <p class="text-sm text-theme-muted mb-4">Check bearing load capacity and L10 life with our free tools:</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/bearing-life-calculator/" class="accent-bg text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-colors" style="color:#07090c;">Bearing Life Calculator</a>
+        <a href="/bearing-calculator/" class="text-sm font-semibold px-4 py-2 rounded-lg border border-theme hover:bg-theme-tertiary transition-colors text-theme-primary">Load & Speed Calculator</a>
+        <a href="/blog/" class="text-sm text-theme-muted hover:accent-text transition-colors">← Back to Blog</a>
+      </div>
+    </footer>
+  </article>
+</Base>
